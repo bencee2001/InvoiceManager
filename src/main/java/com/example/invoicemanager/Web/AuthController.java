@@ -56,8 +56,6 @@ public class AuthController {
     public void createUser(@RequestBody String hello){
 
         System.out.println("Anguler Say: "+ " " +hello);
-
-
     }
 
 }
