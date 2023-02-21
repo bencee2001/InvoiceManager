@@ -5,6 +5,7 @@ import com.example.invoicemanager.Model.User;
 import com.example.invoicemanager.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.digester.Rule;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -14,6 +15,8 @@ import java.util.*;
 public class UserService {
 
     private final UserRepository userRepository;
+
+    private final SecurityContextHolder securityContextHolder;
 
     public List<User> getUsers(){
         return userRepository.findAll();

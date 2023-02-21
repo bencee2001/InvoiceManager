@@ -15,4 +15,13 @@ spring:
     init:
       mode: always
 
+  thymeleaf:
+    cache: false
+    prefix: file:src/main/resources/templates/
+
+  web:
+    resources:
+      static-locations:
+        - "file:src/main/resources/static/"
+        - "classpath:/static/"
 

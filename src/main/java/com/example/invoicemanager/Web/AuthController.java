@@ -6,16 +6,22 @@ import com.example.invoicemanager.Model.UserDTO;
 import com.example.invoicemanager.Service.MyUserDetailsService;
 import com.example.invoicemanager.Service.RoleService;
 import com.example.invoicemanager.Service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@Controller
 public class AuthController {
 
     @Autowired
@@ -33,8 +39,8 @@ public class AuthController {
     @Autowired
     private MyUserDetailsService myUserDetailsService;
 
-    /*@PostMapping("/registration")
-    public void createUser(@RequestBody UserDTO userDTO){
+    @PostMapping("/registration/new")
+    public String createUser(User user){
 
         System.out.println("Anguler Say: Hello");
 
@@ -42,20 +48,40 @@ public class AuthController {
         List<Role> roleSet = new ArrayList<>();
         roleSet.add(role);
 
-        User user = new User(
-                userDTO.getUsername(),
-                userDTO.getName(),
-                passwordEncoder.encode(userDTO.getPassword()),
-                null,
-                roleSet);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setRoles(roleSet);
 
         userService.saveToDatabase(user);
-    }*/
 
-    @RequestMapping("/registration")
-    public void createUser(@RequestBody String hello){
-
-        System.out.println("Anguler Say: "+ " " +hello);
+        return "redirect:/index.html";
     }
+
+    @GetMapping("/registration")
+    public String createUser(Model model){
+        model.addAttribute("newUser",new User());
+        return "registration";
+    }
+
+    @GetMapping("/login")
+    public String toLog() {
+        return "login";
+    }
+
+    @PostMapping("/home")
+    public String login() {
+        return "home";
+    }
+
+    @GetMapping(value = "/logout")
+    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        System.out.println(auth.getPrincipal());
+        if (auth != null){
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/index.html";
+    }
+
+
 
 }

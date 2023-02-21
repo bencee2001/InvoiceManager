@@ -12,6 +12,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -39,22 +40,20 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         return http
-                .csrf().disable()
-                .authorizeHttpRequests()
-                .requestMatchers("/**")
+                .authorizeHttpRequests(auth->auth
+                        .anyRequest("/book").hasRole("ADMIN"))
+                .requestMatchers("/index.html" ,"/book")
+                .permitAll().and()
+                .formLogin()
+                .loginPage("/login")
                 .permitAll()
-                /*.requestMatchers("/","/registration","/users","/roles")
-                .permitAll()
-                .requestMatchers("/user")
-                .hasAuthority("USER")
-                .requestMatchers("/book")
-                .hasAuthority("BOOK")
-                .requestMatchers("/admin")
-                .hasAuthority("ADMIN")
-                .anyRequest()
-                .authenticated()
+                .successForwardUrl("/book")
                 .and()
-                .httpBasic()*/.and()
-                .build();
+                .logout()
+                .permitAll()
+                .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+                .logoutSuccessUrl("/login")
+                .and().build();
+
     }
 }
