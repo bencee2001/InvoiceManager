@@ -48,6 +48,12 @@ public class TestController {
         return names;
     }
 
+
+    @PostMapping("/home")
+    public String login() {
+        return "home";
+    }
+
     @GetMapping("/roles")
     public List<Role> listRoles(){
         return roleRepository.findAll();

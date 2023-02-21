@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping("/auth")
 public class AuthController {
 
     @Autowired
@@ -39,10 +40,9 @@ public class AuthController {
     @Autowired
     private MyUserDetailsService myUserDetailsService;
 
+
     @PostMapping("/registration/new")
     public String createUser(User user){
-
-        System.out.println("Anguler Say: Hello");
 
         Role role = roleService.findById(1); // user-nek az id-ja
         List<Role> roleSet = new ArrayList<>();
@@ -67,10 +67,6 @@ public class AuthController {
         return "login";
     }
 
-    @PostMapping("/home")
-    public String login() {
-        return "home";
-    }
 
     @GetMapping(value = "/logout")
     public String logoutPage (HttpServletRequest request, HttpServletResponse response) {

@@ -25,3 +25,7 @@ spring:
         - "file:src/main/resources/static/"
         - "classpath:/static/"
 
+
+jwt:
+  secret: 42264529482B4D6251655468576D5A7134743777217A25432A462D4A614E6352
+
