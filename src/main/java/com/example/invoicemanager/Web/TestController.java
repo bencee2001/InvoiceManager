@@ -6,6 +6,7 @@ import com.example.invoicemanager.Model.UserDTO;
 import com.example.invoicemanager.Repository.RoleRepository;
 import com.example.invoicemanager.Repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,17 +24,15 @@ public class TestController {
     public String getHome(){
         return "redirect:/";
     }
+
     @GetMapping("/user")
     public String getUser(){
-        return "User";
+        return "user";
     }
-    @GetMapping("/book")
-    public String getBook(){
-        return "page2";
-    }
+
     @GetMapping("/admin")
     public String getAdmin(){
-        return "Admin";
+        return "admin";
     }
 
 
@@ -46,12 +45,6 @@ public class TestController {
             names.add(user.getUserName());
         });
         return names;
-    }
-
-
-    @PostMapping("/home")
-    public String login() {
-        return "home";
     }
 
     @GetMapping("/roles")

@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity(name="users")
 @AllArgsConstructor
@@ -34,6 +35,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(
                     name = "role_id" , referencedColumnName = "id"
             ))
-    private List<Role> roles;
+    private Set<Role> roles;
 
 }

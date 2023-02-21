@@ -16,13 +16,11 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final SecurityContextHolder securityContextHolder;
-
     public List<User> getUsers(){
         return userRepository.findAll();
     }
 
-    public void modifyRules(String userName, List<Role> newRoles){
+    public void modifyRoles(String userName, Set<Role> newRoles){
         Optional<User> optUser = userRepository.findById(userName);
         User user;
         if(optUser.isEmpty()){
