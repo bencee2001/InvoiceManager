@@ -31,6 +31,10 @@ public class UserService {
     }
 
 
+    public User getUserByUsername(String username){
+        return userRepository.findById(username).get();
+    }
+
     public void saveToDatabase(User user){
         userRepository.save(user);
     }

@@ -1,6 +1,5 @@
 package com.example.invoicemanager.Model;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,7 +16,7 @@ public class Invoice {
 
     @Id
     @NonNull
-    private int id;
+    private Integer id;
 
     @NonNull
     private String buyerName;

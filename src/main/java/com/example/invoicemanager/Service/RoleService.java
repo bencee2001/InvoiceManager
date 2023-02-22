@@ -13,10 +13,6 @@ public class RoleService {
 
     final RoleRepository roleRepository;
 
-    public void createRole(String name, String description){
-        roleRepository.save(new Role(name, description));
-    }
-
     public void createRole(String name){
         roleRepository.save(new Role(name));
     }

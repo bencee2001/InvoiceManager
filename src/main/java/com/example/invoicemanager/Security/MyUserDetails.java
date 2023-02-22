@@ -1,5 +1,6 @@
-package com.example.invoicemanager.Model;
+package com.example.invoicemanager.Security;
 
+import com.example.invoicemanager.Model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

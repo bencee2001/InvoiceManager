@@ -1,6 +1,5 @@
-package com.example.invoicemanager.Service;
+package com.example.invoicemanager.Security;
 
-import com.example.invoicemanager.Model.MyUserDetails;
 import com.example.invoicemanager.Model.User;
 import com.example.invoicemanager.Repository.UserRepository;
 import lombok.AllArgsConstructor;
