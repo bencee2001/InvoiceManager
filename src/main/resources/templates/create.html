@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Itt fog készülni az számla</h1>
+
+<form th:action = "@{/list/create/new}"  th:object="${invoice}" method="post">
+    <label for="bname"><b>buyer Name</b></label>
+    <div>
+        <input th:field = "*{buyerName}" type="text"  placeholder="Enter Buyer Name" id="bname" required>
+    </div>
+    <label for="idate"><b>Issue Date</b></label>
+    <div>
+        <input th:field = "*{issueDate}" type="date"  placeholder="Enter Issue Date" id="idate" required>
+    </div>
+    <label for="ddate"><b>Due Date</b></label>
+    <div>
+        <input th:field = "*{dueDate}" type="date"  placeholder="Enter Due Date" id="ddate" required>
+    </div>
+    <label for="comment"><b>Comment</b></label>
+    <div>
+        <input th:field = "*{comment}" type="text"  placeholder="Enter Comment" id="comment" required>
+    </div>
+    <label for="iname"><b>Item</b></label>
+    <div>
+        <input th:field = "*{itemName}" type="text"  placeholder="Enter Item Name" id="iname" required>
+    </div>
+    <label for="price"><b>Cost</b></label>
+    <div>
+        <input th:field = "*{price}" type="number"  placeholder="Enter Price" id="price" required>
+    </div>
+
+        <button type="submit" class="btn btn-danger border-0 btn-sm">
+            Create
+        </button>
+</form>
+
+
+<form th:action="@{/list}" method="get">
+    <button type="submit" class="btn btn-danger border-0 btn-sm">
+        Back
+    </button>
+</form>
+
+</body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -8,5 +8,26 @@
 
 <h1>hello admin</h1>
 
+<tr th:each="user : ${users}">
+
+    <div>
+        <td th:text="${user.userName}"></td>
+        <td th:text="${user.name}"></td>
+        <td>
+            <select  multiple="multiple">
+                <option  th:each="role:${roles}" >
+                    <input type="checkbox" th:text="${role.name}">
+                    
+                </option>
+                    
+            </select>
+        </td>
+    </div>
+</tr>
+<form th:action="@{/home}" method="get">
+    <button type="submit" class="btn btn-danger border-0 btn-sm">
+        Back
+    </button>
+</form>
 </body>
 </html>

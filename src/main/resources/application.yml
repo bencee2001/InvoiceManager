@@ -8,7 +8,6 @@ spring:
     hibernate:
       ddl-auto: update
       enable_lazy_load_no_trans: true
-    defer-datasource-initialization: true
     show_sql: true
 
   sql:

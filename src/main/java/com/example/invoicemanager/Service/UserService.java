@@ -30,6 +30,7 @@ public class UserService {
         user.setRoles(newRoles);
     }
 
+
     public void saveToDatabase(User user){
         userRepository.save(user);
     }

@@ -5,6 +5,8 @@ import com.example.invoicemanager.Repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class RoleService {
@@ -23,6 +25,10 @@ public class RoleService {
         Role role = roleRepository.getReferenceById(id);
         role.setDescription(description);
         roleRepository.save(role);
+    }
+
+    public List<Role> getRoles(){
+        return roleRepository.findAll();
     }
 
     public Role findById(Integer id){

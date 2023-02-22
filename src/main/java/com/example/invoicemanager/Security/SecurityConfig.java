@@ -47,14 +47,21 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth->{
-                    auth.requestMatchers("/auth/**", "/index.html").permitAll();
+                    auth.requestMatchers("/auth/**","/css/**").permitAll();
                     auth.requestMatchers(HttpMethod.GET,"/admin").hasAuthority("ADMIN");
+                    auth.requestMatchers("/list/create/**").hasAnyAuthority("ADMIN","BOOK");
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(login->{
                         login.loginPage("/auth/login");
-                        login.defaultSuccessUrl("/auth/home");
+                        login.defaultSuccessUrl("/beforeHome");
                         login.permitAll();
+                })
+                .logout(logout->{
+                    logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));
+                    logout.logoutSuccessUrl("/login");
+                    logout.deleteCookies("JSESSIONID");
+                    logout.invalidateHttpSession(true);
                 });
         return http.build();
 

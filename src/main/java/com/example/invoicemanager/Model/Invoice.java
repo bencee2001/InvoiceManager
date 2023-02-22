@@ -1,8 +1,7 @@
 package com.example.invoicemanager.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.annotation.Nullable;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -17,8 +16,8 @@ import java.util.Date;
 public class Invoice {
 
     @Id
-    @GeneratedValue
-    private Integer id;
+    @NonNull
+    private int id;
 
     @NonNull
     private String buyerName;

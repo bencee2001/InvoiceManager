@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>itt lesz egy számla</h1>
+<label>Username</label>:<br />
+<input type="text" th:value="${invoice.buyerName}" readonly/><br />
+<label>Issue Date</label>:<br />
+<input type="text" th:value="${invoice.issueDate}" readonly/><br />
+<label>DueDate</label>:<br />
+<input type="text" th:value="${invoice.dueDate}" readonly/><br />
+<label>Comment</label>:<br />
+<input type="text" th:value="${invoice.comment}" readonly/><br />
+<label>Item Name</label>:<br />
+<input type="text" th:value="${invoice.itemName}" readonly/><br />
+<label>Price</label>:<br />
+<input type="text" th:value="${invoice.price}" readonly/><br />
+
+
+
+
+<form th:action="@{/list}" method="get">
+    <button type="submit" class="btn btn-danger border-0 btn-sm">
+        Back
+    </button>
+</form>
+</body>
+</html>

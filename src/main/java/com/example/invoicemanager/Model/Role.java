@@ -8,6 +8,7 @@ import lombok.*;
 
 
 @RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter

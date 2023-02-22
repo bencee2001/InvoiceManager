@@ -8,6 +8,7 @@ import com.example.invoicemanager.Service.RoleService;
 import com.example.invoicemanager.Service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,38 +27,22 @@ import java.util.List;
 import java.util.Set;
 
 @Controller
+@RequiredArgsConstructor
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
-    private RoleService roleService;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Autowired
-    private MyUserDetailsService myUserDetailsService;
-
+    private final RoleService roleService;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/registration/new")
     public String createUser(User user){
-
-        Role role = roleService.findById(1); // user-nek az id-ja
         Set<Role> roleSet = new HashSet<>();
-        roleSet.add(role);
-
+        roleSet.add(new Role(1,"USER",null));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRoles(roleSet);
-
         userService.saveToDatabase(user);
-
-        return "redirect:/index.html";
+        return "redirect:/login";
     }
 
     @GetMapping("/registration")
@@ -73,45 +58,16 @@ public class AuthController {
         return "login";
     }
 
-    @GetMapping("/home")
-    public String login() {
-        System.out.println("---------------------------------");
-        getPrincipal();
-        return "home";
-    }
-
-
-    @GetMapping("/book")
-    public String getBook(){
-        getPrincipal();
-        return "page2";
-    }
-
     private void getPrincipal(){
         User user = null;
         if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof UserDetails) {
             UserDetails user2 = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            System.out.println("s");
             System.out.println(user2.getUsername());
             System.out.println(user2.getPassword());
             System.out.println(user2.getAuthorities());
-            System.out.println("s");
         }else{
             System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         }
     }
-
-
-    /*@GetMapping(value = "/logout")
-    public String logoutPage (HttpServletRequest request, HttpServletResponse response) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth.getPrincipal());
-        if (auth != null){
-            new SecurityContextLogoutHandler().logout(request, response, auth);
-        }
-        return "redirect:/index.html";
-    }*/
-
-
 
 }
