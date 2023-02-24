@@ -119,6 +119,14 @@
               border: 3px solid #ccd2ff;
             }
 
+            input {
+                 padding: 12px 20px;
+                 margin: 8px 0;
+                 box-sizing: border-box;
+                 border: 2px solid #ccd2ff;
+                 border-radius: 4px;
+            }
+
     </style>
 
 </head>
@@ -129,7 +137,7 @@
         <a th:href="@{/auth/login}">Login</a>
     </div>
 </div>
-<form th:action="@{/auth/registration/new}" th:object="${newUser}" method="post">
+<form id="regForm" th:action="@{/auth/registration/new}" th:object="${newUser}" method="post">
     <div class = center>
         <div class=fromTop>
             <label for="fname"><b>Full Name</b></label>
@@ -156,7 +164,7 @@
                 <input  th:id="|check${role.id}|" th:onclick="success()"  th:name="newRoles" th:value="${role.id}" type="checkbox" th:text="${role.name}"/>
             </div>
             <div>
-                <button class="button" id="button"  type="submit">Register</button>
+                <button class="button" id="button">Register</button>
             </div>
 
         </div>
@@ -191,11 +199,15 @@
 	      }
     }
 
-    function passwordsMatch(){
+    let regForm = document.getElementById("regForm");
+    regForm.addEventListener("submit", (e) => {
+        e.preventDefault();
         if(document.getElementById("psw1").value === document.getElementById("psw2").value){
-
+           document.getElementById("regForm").submit();
+        }else{
+           alert('Passwords are not matching.');
         }
-    }
+   })
 
 
 </script>

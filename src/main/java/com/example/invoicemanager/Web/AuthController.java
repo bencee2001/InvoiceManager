@@ -26,11 +26,15 @@ public class AuthController {
 
     private final UserService userService;
     private final RoleService roleService;
-    private final MyUserDetailsService userDetailsService;
-    private final PasswordEncoder passwordEncoder;
 
     @PostMapping("/registration/new")
     public String createUser(User user , @RequestParam("newRoles")List<String> roles){
+        List<User> users=userService.getUsers();
+        users = users.stream().filter(userfromlist -> {
+            return userfromlist.getUserName().equals(user.getUserName());
+        }).toList();
+        if(users.size()!=0)
+            throw new RuntimeException("User already exist.");
         userService.saveUser(user, roles);
         return "redirect:/login";
     }
@@ -43,8 +47,7 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String toLog() {
+    public String toLogin() {
         return "login";
     }
-
 }

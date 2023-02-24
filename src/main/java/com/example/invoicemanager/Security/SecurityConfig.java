@@ -48,7 +48,7 @@ public class SecurityConfig {
                     auth.requestMatchers("/auth/**","**/*.css").permitAll();
                     auth.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll();
                     auth.requestMatchers(HttpMethod.GET,"/admin").hasAuthority("ADMIN");
-                    auth.requestMatchers("/list/create/**").hasAuthority("BOOK");
+                    auth.requestMatchers("/list/create/**").hasAnyAuthority("BOOK","ADMIN");
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(login->{
@@ -56,7 +56,6 @@ public class SecurityConfig {
                         login.defaultSuccessUrl("/home");
                         login.permitAll();
                         login.successHandler(loginSuccessHandler);
-                        //login.failureHandler(loginFailureHandler);
                 })
                 .logout(logout->{
                     logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));

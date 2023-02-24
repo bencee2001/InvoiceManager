@@ -61,23 +61,23 @@ public class UserService {
         }
         Set<Role> newRolesForUser = new HashSet<>();
         List<Role> roleList = roleRepository.findAll();
-        roleList.forEach(role -> System.out.println(role.getId()));
-        System.out.println(newRoleIds);
         roleList.stream().filter(role -> newRoleIds.contains(String.valueOf(role.getId())))
                 .toList().forEach(role -> newRolesForUser.add(role));
-
-        setSecurityContext(roleList, newRoleIds);
+        setSecurityContext(roleList, newRoleIds,username);
         User user = userRepository.findById(username).get();
         user.setRoles(newRolesForUser);
         userRepository.save(user);
     }
 
-    private void setSecurityContext(List<Role> roleList,List<String> newRoleIds){
+    private void setSecurityContext(List<Role> roleList,List<String> newRoleIds,String username){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        List<GrantedAuthority> updatedAuthorities = new ArrayList<>();
-        roleList.stream().filter(role -> newRoleIds.contains(String.valueOf(role.getId())))
-                .toList().forEach(role -> updatedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
-        Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
-        SecurityContextHolder.getContext().setAuthentication(newAuth);
+        UserDetails userDetails= (UserDetails) auth.getPrincipal();
+        if(userDetails.getUsername().equals(username)) {
+            List<GrantedAuthority> updatedAuthorities = new ArrayList<>();
+            roleList.stream().filter(role -> newRoleIds.contains(String.valueOf(role.getId())))
+                    .toList().forEach(role -> updatedAuthorities.add(new SimpleGrantedAuthority(role.getName())));
+            Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
+            SecurityContextHolder.getContext().setAuthentication(newAuth);
+        }
     }
 }

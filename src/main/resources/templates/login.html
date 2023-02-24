@@ -119,6 +119,14 @@
               border: 3px solid #ccd2ff;
             }
 
+            input {
+                 padding: 12px 20px;
+                 margin: 8px 0;
+                 box-sizing: border-box;
+                 border: 2px solid #ccd2ff;
+                 border-radius: 4px;
+            }
+
     </style>
 
 </head>
@@ -133,9 +141,13 @@
     <p th:if="${loginError}" class="error">Wrong user or password</p>
     <form th:action="@{/auth/login}" method="post">
         <label  for="username">Username</label>:
-        <input th:onkeyup="success()" type="text" id="username" name="username" autofocus="autofocus" /> <br />
+        <div>
+        <input th:onkeyup="success()" type="text" id="username" th:name="username" autofocus="autofocus" placeholder="Enter Username" /> <br />
+        </div>
         <label for="password">Password</label>:
-        <input th:onkeyup="success()" type="password" id="password" name="password" /> <br />
+        <div>
+        <input th:onkeyup="success()" type="password" id="password" name="password" placeholder="Enter Password"/> <br />
+        </div>
         <input class="button" id="button" type="submit" value="Login" disabled/>
     </form>
   </div>

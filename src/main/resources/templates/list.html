@@ -107,7 +107,7 @@
 <div class="header">
     <strong><span class="logo">Invoice List</span></strong>
     <div class="header-right">
-        <a sec:authorize="hasAuthority('BOOK')" th:href="@{/list/create}">Create+</a>
+        <a sec:authorize="hasAnyAuthority('BOOK','ADMIN')" th:href="@{/list/create}">Create+</a>
         <a th:href="@{/home}">Home</a>
         <a th:href="@{/logout}">Logout</a>
     </div>
