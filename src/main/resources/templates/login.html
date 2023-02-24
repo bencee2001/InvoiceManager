@@ -139,7 +139,7 @@
     <form th:action="@{/auth/login}" method="post">
         <label  for="username">Username</label>:
         <div>
-        <input th:onkeyup="success()" type="text" id="username" th:name="username" autofocus="autofocus" placeholder="Enter Username" /> <br />
+        <input th:onkeyup="success()" type="text" id="username" name="username" autofocus="autofocus" placeholder="Enter Username" /> <br />
         </div>
         <label for="password">Password</label>:
         <div>

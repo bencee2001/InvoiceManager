@@ -145,7 +145,7 @@
                 <input th:onkeyup="success()" type="text"  th:field = "*{userName}" placeholder="Enter Username" id="uname" required>
             </div>
             <div>
-                <label for="psw1"><b>Password</b></label>
+                <label for="psw1"><b>Password(At least 4 character)</b></label>
             </div>
             <div>
                 <input th:onkeyup="success()" type="password" th:field = "*{password}"  placeholder="Enter Password" id="psw1" required>
@@ -154,7 +154,7 @@
                 <label for="psw2"><b>Confirm Password</b></label>
             </div>
             <div>
-                <input th:onkeyup="success()" type="password" th:field = "*{password}"  placeholder="Enter Password" id="psw2" required>
+                <input th:onkeyup="success()" type="password" placeholder="Enter Password" id="psw2" required>
             </div>
             <div th:each="role:${userRoles}" th:if="${role.id!=3}">
                 <input  th:id="|check${role.id}|" th:onclick="success()"  th:name="newRoles" th:value="${role.id}" type="checkbox" th:text="${role.name}"/>
@@ -173,7 +173,6 @@
      roles=roles.filter(item => item.id!==3);
 
      function isAnyChecked(){
-        console.log(roles.length);
         for (let i = 0; i < roles.length; i++) {  //delete nem torol rendesen ezert kell a -1
             if(document.getElementById('check'+roles[i].id)?.checked){
                return true;

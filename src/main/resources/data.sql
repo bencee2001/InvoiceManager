@@ -19,7 +19,7 @@ INSERT INTO users_roles (username, role_id)
 VALUES ('admin', 3);
 
 INSERT INTO users (user_name, name, password,failed_login_attempts)
-VALUES ('book', 'Boo Ker', '$2a$12$z4hjLUToDJu8KItL0q/bdONG2NuC9UPFQ8/J6gBI./Dbt.M6PpokW',0);
+VALUES ('book', 'Boo Ker', '$2a$10$.C9vZwZzy2uIaN3k77R0oOxQy.WaS8Sh2tXBtJWgDzlrnvYz/iy7S',0);
 
 INSERT INTO users_roles (username, role_id)
 VALUES ('book', 2);
