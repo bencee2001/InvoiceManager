@@ -21,7 +21,6 @@
               border-radius: 4px;
             }
 
-
             .header span {
               float: left;
               color: black;
@@ -38,24 +37,19 @@
               font-weight: bold;
             }
 
-
             .header a:hover {
               background-color: #ccd2ff;
               color: black;
             }
-
 
             .header a.active {
               background-color: dodgerblue;
               color: white;
             }
 
-
             .header-right {
               float: right;
             }
-
-
             @media screen and (max-width: 500px) {
               .header a {
                 float: none;
@@ -67,28 +61,30 @@
               }
             }
 
-
-        td {
-           border: 2px solid #ccd2ff;
-           position: relative;
-           padding: 18px;
-        }
-        tr:hover {
-           background: #f2f3ff;
-           outline: none;
-           cursor: pointer;
-        }
-        .button {
-            border-radius: 12px;
-             background-color: #50A0F0;
-              border: none;
-              color: white;
-              padding: 7px 16px;
-              text-align: center;
-              text-decoration: none;
-              display: inline-block;
-              font-size: 16px;
+            td {
+               border: 2px solid #ccd2ff;
+               position: relative;
+               padding: 18px;
             }
+
+            tr:hover {
+               background: #f2f3ff;
+               outline: none;
+               cursor: pointer;
+            }
+
+            .button {
+                border-radius: 12px;
+                 background-color: #50A0F0;
+                  border: none;
+                  color: white;
+                  padding: 7px 16px;
+                  text-align: center;
+                  text-decoration: none;
+                  display: inline-block;
+                  font-size: 16px;
+                }
+
             .button:hover {
             border-radius: 12px;
              background-color: #87BEF5;
@@ -112,6 +108,7 @@
         <a th:href="@{/logout}">Logout</a>
     </div>
 </div>
+
 <table style="margin-left: auto; margin-right: auto;">
     <tbody>
         <tr>
@@ -122,7 +119,7 @@
             <th>Price</th>
             <th></th>
         </tr>
-        <tr th:each="invoice : ${invoices}" th:attr="onclick=|greetWorld('${invoice.id}')|" >
+        <tr th:each="invoice : ${invoices}" th:attr="onclick=|viewInvoice('${invoice.id}')|" >
             <div>
 
                     <td th:text="${invoice.buyerName}"></td>
@@ -143,11 +140,11 @@
         </tr>
     </tbody>
 </table>
+
 <script th:inline="javascript">
-    function greetWorld(val) {
+    function viewInvoice(val) {
         window.location.href = '/list/select/'+val
     }
-
 </script>
 </body>
 </html>

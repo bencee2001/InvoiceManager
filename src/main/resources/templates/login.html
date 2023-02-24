@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Login</title>
     <style>
-
             .header {
               overflow: hidden;
               background-color: #f1f1f1;
@@ -22,7 +21,6 @@
               border-radius: 4px;
             }
 
-
             .header span {
               float: left;
               color: black;
@@ -39,23 +37,19 @@
               font-weight: bold;
             }
 
-
             .header a:hover {
               background-color: #ccd2ff;
               color: black;
             }
-
 
             .header a.active {
               background-color: dodgerblue;
               color: white;
             }
 
-
             .header-right {
               float: right;
             }
-
 
             @media screen and (max-width: 500px) {
               .header a {
@@ -91,6 +85,7 @@
               display: inline-block;
               font-size: 16px;
             }
+
             .button:enabled:hover {
             border-radius: 12px;
              background-color: #87BEF5;
@@ -102,6 +97,7 @@
               display: inline-block;
               font-size: 16px;
             }
+
             .button:enabled {
             border-radius: 12px;
              background-color: #50A0F0;
@@ -126,18 +122,19 @@
                  border: 2px solid #ccd2ff;
                  border-radius: 4px;
             }
-
     </style>
 
 </head>
 <body>
+
 <div class="header">
     <strong><span  class="logo">Login</span></strong>
     <div class="header-right">
         <a th:href="@{/auth/registration}">Sign in</a>
     </div>
 </div>
-  <div class="center">
+
+<div class="center">
     <p th:if="${loginError}" class="error">Wrong user or password</p>
     <form th:action="@{/auth/login}" method="post">
         <label  for="username">Username</label>:
@@ -150,7 +147,7 @@
         </div>
         <input class="button" id="button" type="submit" value="Login" disabled/>
     </form>
-  </div>
+</div>
 </body>
 
 <script th:inline="javascript">
@@ -162,7 +159,6 @@
 	        document.getElementById("button").disabled=true
 	     }
     }
-
 
 </script>
 </body>

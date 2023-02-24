@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 
     <style>
-            td {
+           td {
                border: 2px solid #ccd2ff;
                position: relative;
                padding: 18px;
@@ -85,7 +85,6 @@
               border-radius: 4px;
             }
 
-
             .header span {
               float: left;
               color: black;
@@ -102,23 +101,19 @@
               font-weight: bold;
             }
 
-
             .header a:hover {
               background-color: #ccd2ff;
               color: black;
             }
-
 
             .header a.active {
               background-color: dodgerblue;
               color: white;
             }
 
-
             .header-right {
               float: right;
             }
-
 
             @media screen and (max-width: 500px) {
               .header a {
@@ -167,7 +162,6 @@
     </style>
 </head>
 <body>
-
 <div class="header">
     <strong><span class="logo">Admin Site</span></strong>
     <div class="header-right">
@@ -195,10 +189,10 @@
                             <div th:id="|listOf${user.userName}|" class="dropdown-check-list" tabindex="100">
                                 <span class="anchor" >Select Role</span>
                                 <ul class="items" th:each="role:${roles}">
-                                    <li><input th:onclick="checkForOneChecked()" th:id="|check${role.id}|" th:name="newRoles" th:value="${role.id}" type="checkbox" th:text="${role.name}" th:checked="${user.getRoles().contains(role)}" /> </li>
+                                    <li><input th:attr="onclick=|checkForOneChecked('${user.userName}')|" th:id="|check${user.userName}${role.id}|" th:name="newRoles" th:value="${role.id}" type="checkbox" th:text="${role.name}" th:checked="${user.getRoles().contains(role)}" /> </li>
                                 </ul>
                             </div>
-                           <button  id="saveButton"  type="submit" class="button">
+                           <button  th:id="|saveButton${user.userName}|"  type="submit" class="button">
                                Save
                            </button>
 
@@ -213,6 +207,7 @@
         </tr>
     </tbody>
 </table>
+
 <script th:inline="javascript">
 
            var users = [[${users}]];
@@ -232,18 +227,15 @@
                window.location.href='/admin/delete/'+val
             }
 
-            function checkForOneChecked(){
-               for (let i = 0; i < roles.length; i++) {
-                  if(document.getElementById('check'+roles[i].id).checked){
-                     document.getElementById('saveButton').disabled=false;
-                     return;
-                  }
-               }
-               document.getElementById('saveButton').disabled=true;
+            function checkForOneChecked(userId){
+                   for (let i = 0; i < roles.length; i++) {
+                      if(document.getElementById('check'+userId+roles[i].id).checked){
+                         document.getElementById('saveButton'+userId).disabled=false;
+                         return;
+                      }
+                   }
+               document.getElementById('saveButton'+userId).disabled=true;
             }
-
-
-
 
 </script>
 </body>
