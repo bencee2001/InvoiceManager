@@ -3,10 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+        .header {
+              overflow: hidden;
+              background-color: #f1f1f1;
+              padding: 20px 10px;
+            }
+
+            .header a {
+              float: left;
+              color: black;
+              text-align: center;
+              padding: 12px;
+              text-decoration: none;
+              font-size: 18px;
+              line-height: 25px;
+              border-radius: 4px;
+            }
+
+
+            .header span {
+              float: left;
+              color: black;
+              text-align: center;
+              padding: 12px;
+              text-decoration: none;
+              font-size: 18px;
+              line-height: 25px;
+              border-radius: 4px;
+            }
+
+            .header a.logo {
+              font-size: 25px;
+              font-weight: bold;
+            }
+
+
+            .header a:hover {
+              background-color: #ccd2ff;
+              color: black;
+            }
+
+
+            .header a.active {
+              background-color: dodgerblue;
+              color: white;
+            }
+
+
+            .header-right {
+              float: right;
+            }
+
+
+            @media screen and (max-width: 500px) {
+              .header a {
+                float: none;
+                display: block;
+                text-align: left;
+              }
+              .header-right {
+                float: none;
+              }
+            }
+
+            input[type=text] {
+                 width: 100%;
+                 padding: 12px 20px;
+                 margin: 8px 0;
+                 box-sizing: border-box;
+                 border: 2px solid #ccd2ff;
+                 border-radius: 4px;
+            }
+
+
+    </style>
 </head>
 <body>
-<h1>itt lesz egy számla</h1>
-<label>Username</label>:<br />
+
+<div class="header">
+    <strong><span class="logo" th:text="|${invoice.buyerName}'s invoice|"></span></strong>
+    <div class="header-right">
+        <a th:href="@{/list}">Back to list</a>
+        <a th:href="@{/home}">Home</a>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+</div>
+
+<label>Buyer Name</label>:<br />
 <input type="text" th:value="${invoice.buyerName}" readonly/><br />
 <label>Issue Date</label>:<br />
 <input type="text" th:value="${invoice.issueDate}" readonly/><br />
@@ -19,13 +103,5 @@
 <label>Price</label>:<br />
 <input type="text" th:value="${invoice.price}" readonly/><br />
 
-
-
-
-<form th:action="@{/list}" method="get">
-    <button type="submit" class="btn btn-danger border-0 btn-sm">
-        Back
-    </button>
-</form>
 </body>
 </html>

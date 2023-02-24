@@ -1,8 +1,7 @@
 package com.example.invoicemanager.Security;
 
-import jakarta.servlet.Filter;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,13 +11,10 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.authentication.event.AuthenticationSuccessEvent;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -27,6 +23,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 public class SecurityConfig {
 
     private final UserDetailsService userDetailsService;
+    private final MyLoginSuccessHandler loginSuccessHandler;
+    private final MyLoginFailureHandler loginFailureHandler;
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
@@ -47,15 +45,18 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth->{
-                    auth.requestMatchers("/auth/**","/css/**").permitAll();
+                    auth.requestMatchers("/auth/**","**/*.css").permitAll();
+                    auth.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll();
                     auth.requestMatchers(HttpMethod.GET,"/admin").hasAuthority("ADMIN");
-                    auth.requestMatchers("/list/create/**").hasAnyAuthority("ADMIN","BOOK");
+                    auth.requestMatchers("/list/create/**").hasAuthority("BOOK");
                     auth.anyRequest().authenticated();
                 })
                 .formLogin(login->{
                         login.loginPage("/auth/login");
-                        login.defaultSuccessUrl("/beforeHome");
+                        login.defaultSuccessUrl("/home");
                         login.permitAll();
+                        login.successHandler(loginSuccessHandler);
+                        //login.failureHandler(loginFailureHandler);
                 })
                 .logout(logout->{
                     logout.logoutRequestMatcher(new AntPathRequestMatcher("/logout"));

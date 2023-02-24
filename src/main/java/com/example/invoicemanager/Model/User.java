@@ -36,4 +36,7 @@ public class User {
             ))
     private Set<Role> roles;
 
+    @Column(nullable = true)
+    private Integer failedLoginAttempts;
+
 }

@@ -3,49 +3,151 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <style>
+            .header {
+              overflow: hidden;
+              background-color: #f1f1f1;
+              padding: 20px 10px;
+            }
+
+            .header a {
+              float: left;
+              color: black;
+              text-align: center;
+              padding: 12px;
+              text-decoration: none;
+              font-size: 18px;
+              line-height: 25px;
+              border-radius: 4px;
+            }
+
+
+            .header span {
+              float: left;
+              color: black;
+              text-align: center;
+              padding: 12px;
+              text-decoration: none;
+              font-size: 18px;
+              line-height: 25px;
+              border-radius: 4px;
+            }
+
+            .header a.logo {
+              font-size: 25px;
+              font-weight: bold;
+            }
+
+
+            .header a:hover {
+              background-color: #ccd2ff;
+              color: black;
+            }
+
+
+            .header a.active {
+              background-color: dodgerblue;
+              color: white;
+            }
+
+
+            .header-right {
+              float: right;
+            }
+
+
+            @media screen and (max-width: 500px) {
+              .header a {
+                float: none;
+                display: block;
+                text-align: left;
+              }
+              .header-right {
+                float: none;
+              }
+            }
+
+
+        td {
+           border: 2px solid #ccd2ff;
+           position: relative;
+           padding: 18px;
+        }
+        tr:hover {
+           background: #f2f3ff;
+           outline: none;
+           cursor: pointer;
+        }
+        .button {
+            border-radius: 12px;
+             background-color: #50A0F0;
+              border: none;
+              color: white;
+              padding: 7px 16px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 16px;
+            }
+            .button:hover {
+            border-radius: 12px;
+             background-color: #87BEF5;
+              border: none;
+              color: white;
+              padding: 7px 16px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 16px;
+            }
+    </style>
+
 </head>
 <body>
-<h1>itt lesz a lista</h1>
-
-<tr th:each="invoice : ${invoices}">
-    <div>
-
-            <td th:text="${invoice.buyerName}"></td>
-            <td th:text="${invoice.issueDate}"></td>
-            <td th:text="${invoice.dueDate}"></td>
-            <td th:text="${invoice.dueDate}"></td>
-            <td th:text="${invoice.comment}"></td>
-            <td th:text="${invoice.price}"></td>
-
-    <td>
-        <form th:action="@{|/list/delete/${invoice.id}|}" method="get">
-            <button type="submit" class="btn btn-danger border-0 btn-sm">
-                X
-            </button>
-        </form>
-    </td>
-
-        <td>
-            <form th:action="@{|/list/select/${invoice.id}|}" method="get">
-                <button type="submit" class="btn btn-danger border-0 btn-sm">
-                    ->
-                </button>
-            </form>
-        </td>
+<div class="header">
+    <strong><span class="logo">Invoice List</span></strong>
+    <div class="header-right">
+        <a sec:authorize="hasAuthority('BOOK')" th:href="@{/list/create}">Create+</a>
+        <a th:href="@{/home}">Home</a>
+        <a th:href="@{/logout}">Logout</a>
     </div>
+</div>
+<table style="margin-left: auto; margin-right: auto;">
+    <tbody>
+        <tr>
+            <th>Buyer Name</th>
+            <th>Issue Date</th>
+            <th>Due Date</th>
+            <th>Comment</th>
+            <th>Price</th>
+            <th></th>
+        </tr>
+        <tr th:each="invoice : ${invoices}" th:attr="onclick=|greetWorld('${invoice.id}')|" >
+            <div>
 
-</tr>
+                    <td th:text="${invoice.buyerName}"></td>
+                    <td th:text="${invoice.issueDate}"></td>
+                    <td th:text="${invoice.dueDate}"></td>
+                    <td th:text="${invoice.comment}"></td>
+                    <td th:text="${invoice.price}"></td>
 
-<form sec:authorize="hasAnyAuthority('ADMIN','BOOK')" th:action="@{/list/create}" method="get">
-    <button type="submit" class="btn btn-danger border-0 btn-sm">
-        Create
-    </button>
-</form>
-<form th:action="@{/home}" method="get">
-    <button type="submit" class="btn btn-danger border-0 btn-sm">
-        Back
-    </button>
-</form>
+            <td>
+                <form th:action="@{|/list/delete/${invoice.id}|}" method="get">
+                    <button type="submit" class="button">
+                        X
+                    </button>
+                </form>
+            </td>
+            </div>
 
+        </tr>
+    </tbody>
+</table>
+<script th:inline="javascript">
+    function greetWorld(val) {
+        window.location.href = '/list/select/'+val
+    }
+
+</script>
 </body>
 </html>

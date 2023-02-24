@@ -19,25 +19,13 @@ public class StartController {
 
     @GetMapping("/")
     public String getHome(){
-        return "redirect:/beforeHome";
-    }
-
-    @GetMapping("/beforeHome")
-    public String saveLoginTime(){
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = principal.getUsername();
-        User user = userService.getUserByUsername(username);
-        user.setLastLogin(new Date());
-        userService.saveToDatabase(user);
         return "redirect:/home";
     }
 
+
     @GetMapping("/home")
-    public String login(Model model) {
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username = principal.getUsername();
-        User user = userService.getUserByUsername(username);
-        model.addAttribute("object", user);
+    public String toHome(Model model) {
+        model.addAttribute("object", userService.getPrincipalUser());
         return "home";
     }
 }

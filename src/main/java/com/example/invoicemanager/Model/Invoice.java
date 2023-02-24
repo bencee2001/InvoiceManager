@@ -15,7 +15,7 @@ import java.util.Date;
 public class Invoice {
 
     @Id
-    @NonNull
+    @GeneratedValue
     private Integer id;
 
     @NonNull

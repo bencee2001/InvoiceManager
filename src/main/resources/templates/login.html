@@ -3,25 +3,155 @@
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
-    <h1>Log</h1>
-</head>
-<body>
+    <style>
 
-<head>
-    <title>Login page</title>
+            .header {
+              overflow: hidden;
+              background-color: #f1f1f1;
+              padding: 20px 10px;
+            }
+
+            .header a {
+              float: left;
+              color: black;
+              text-align: center;
+              padding: 12px;
+              text-decoration: none;
+              font-size: 18px;
+              line-height: 25px;
+              border-radius: 4px;
+            }
+
+
+            .header span {
+              float: left;
+              color: black;
+              text-align: center;
+              padding: 12px;
+              text-decoration: none;
+              font-size: 18px;
+              line-height: 25px;
+              border-radius: 4px;
+            }
+
+            .header a.logo {
+              font-size: 25px;
+              font-weight: bold;
+            }
+
+
+            .header a:hover {
+              background-color: #ccd2ff;
+              color: black;
+            }
+
+
+            .header a.active {
+              background-color: dodgerblue;
+              color: white;
+            }
+
+
+            .header-right {
+              float: right;
+            }
+
+
+            @media screen and (max-width: 500px) {
+              .header a {
+                float: none;
+                display: block;
+                text-align: left;
+              }
+              .header-right {
+                float: none;
+              }
+            }
+
+            td span a{
+                  background-color: dodgerblue;
+                  color: white;
+                  display: inline-block;
+                  color: black;
+                  text-align: center;
+                  padding: 14px;
+                  text-decoration: none;
+                  font-size: 17px;
+                  border-radius: 5px;
+            }
+
+            .button:disabled {
+            border-radius: 12px;
+             background-color: #B4BAC3;
+              border: none;
+              color: white;
+              padding: 7px 16px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 16px;
+            }
+            .button:enabled:hover {
+            border-radius: 12px;
+             background-color: #87BEF5;
+              border: none;
+              color: white;
+              padding: 7px 16px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 16px;
+            }
+            .button:enabled {
+            border-radius: 12px;
+             background-color: #50A0F0;
+              border: none;
+              color: white;
+              padding: 7px 16px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 16px;
+            }
+
+            .center {
+              text-align: center;
+              border: 3px solid #ccd2ff;
+            }
+
+    </style>
+
 </head>
 <body>
-    <h1>Login page</h1>
+<div class="header">
+    <strong><span  class="logo">Login</span></strong>
+    <div class="header-right">
+        <a th:href="@{/auth/registration}">Sign in</a>
+    </div>
+</div>
+  <div class="center">
     <p th:if="${loginError}" class="error">Wrong user or password</p>
     <form th:action="@{/auth/login}" method="post">
-        <label for="username">Username</label>:
-        <input type="text" id="username" name="username" autofocus="autofocus" /> <br />
+        <label  for="username">Username</label>:
+        <input th:onkeyup="success()" type="text" id="username" name="username" autofocus="autofocus" /> <br />
         <label for="password">Password</label>:
-        <input type="password" id="password" name="password" /> <br />
-        <input type="submit" value="Login" />
+        <input th:onkeyup="success()" type="password" id="password" name="password" /> <br />
+        <input class="button" id="button" type="submit" value="Login" disabled/>
     </form>
+  </div>
 </body>
 
+<script th:inline="javascript">
 
+     function success() {
+	     if(document.getElementById("username").value!=="" && document.getElementById("password").value.length>3){
+	        document.getElementById("button").disabled=false
+	     }else{
+	        document.getElementById("button").disabled=true
+	     }
+    }
+
+
+</script>
 </body>
 </html>

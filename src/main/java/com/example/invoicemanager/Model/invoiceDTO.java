@@ -8,7 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
-public class ModelInvoice {
+public class invoiceDTO {
     private String buyerName;
     private String issueDate;
     private String dueDate;

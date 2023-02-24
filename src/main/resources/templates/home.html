@@ -6,32 +6,117 @@
 
     <style>
 
+            .header {
+              overflow: hidden;
+              background-color: #f1f1f1;
+              padding: 20px 10px;
+            }
+
+            .header a {
+              float: left;
+              color: black;
+              text-align: center;
+              padding: 12px;
+              text-decoration: none;
+              font-size: 18px;
+              line-height: 25px;
+              border-radius: 4px;
+            }
+
+
+            .header span {
+              float: left;
+              color: black;
+              text-align: center;
+              padding: 12px;
+              text-decoration: none;
+              font-size: 18px;
+              line-height: 25px;
+              border-radius: 4px;
+            }
+
+            .header a.logo {
+              font-size: 25px;
+              font-weight: bold;
+            }
+
+
+            .header a:hover {
+              background-color: #ccd2ff;
+              color: black;
+            }
+
+
+            .header a.active {
+              background-color: dodgerblue;
+              color: white;
+            }
+
+
+            .header-right {
+              float: right;
+            }
+
+
+            @media screen and (max-width: 500px) {
+              .header a {
+                float: none;
+                display: block;
+                text-align: left;
+              }
+              .header-right {
+                float: none;
+              }
+            }
+
+            td span a{
+                  background-color: dodgerblue;
+                  color: white;
+                  display: inline-block;
+                  color: black;
+                  text-align: center;
+                  padding: 14px;
+                  text-decoration: none;
+                  font-size: 17px;
+                  border-radius: 5px;
+            }
     </style>
+    <link herf="../static/css/login.css" th:herf="@{/css/login.css}" rel="stylesheet">
 </head>
 <body>
-<h1 >Home</h1>
 
-<div th:text="${object.userName}"></div>
-<div th:text="${object.name}"></div>
-<div th:text="${object.lastLogin}"></div>
-<tr th:each="role : ${object.roles}">
-    <td th:text="${role.name}"></td>
-</tr>
-<div >
-    <a href="#" th:href="@{/list}">Invoice List</a>
+<div class="header">
+    <span th:text="${object.userName}" class="logo"></span>
+    <div class="header-right">
+
+        <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin}">Admin site</a>
+        <a th:href="@{/list}">Invoice List</a>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
 </div>
+<table style="width:100%">
+    <tbody>
+       <tr>
+           <td style="width:50%">
+               <span>
+                    <div>
+                        <h3>User Data:</h3>
+                    </div>
+                    <strong><span>Name:</span></strong>
+                    <span th:text="${object.name}"></span>
+                    <div>
+                        <strong><span>Last Login:</span></strong>
+                        <span th:text="${object.lastLogin}"></span>
+                    </div>
+                    <strong><span>Role/Roles:</span></strong>
+                    <span th:each="role : ${object.roles}" th:text="|${role.name},  |"></span>
+               </span>
+           </td>
+       </tr>
+    </tbody>
+</table>
 
 
-<div sec:authorize="hasAuthority('ADMIN')">
-    <a href="#" th:href="@{/admin}">Admin site</a>
-</div>
-
-
-
-
-<div>
-  <a href="#" th:href="@{/logout}">Log Out</a>
-</div>
 
 </body>
 </html>

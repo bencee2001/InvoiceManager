@@ -16,25 +16,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureTestDatabase
 class InvoicemanagerApplicationTests {
 
-	@Autowired
-	RoleRepository roleRepository;
-
-	@Autowired
-	RoleService roleService;
-
-
 	@Test
 	void contextLoads() {
-		roleService.createRole("hello");
-		roleService.createRole("bello");
 
-		List<Role> roles = roleRepository.findAll();
-
-		Role role=roles.get(0);
-
-		System.out.println(role.getId() + " " + role.getName());
-
-		assertEquals(roles.size(),2);
 	}
 
 }

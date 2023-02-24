@@ -3,14 +3,135 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+
+    <style>
+        .header {
+              overflow: hidden;
+              background-color: #f1f1f1;
+              padding: 20px 10px;
+            }
+
+            .header a {
+              float: left;
+              color: black;
+              text-align: center;
+              padding: 12px;
+              text-decoration: none;
+              font-size: 18px;
+              line-height: 25px;
+              border-radius: 4px;
+            }
+
+
+            .header span {
+              float: left;
+              color: black;
+              text-align: center;
+              padding: 12px;
+              text-decoration: none;
+              font-size: 18px;
+              line-height: 25px;
+              border-radius: 4px;
+            }
+
+            .header a.logo {
+              font-size: 25px;
+              font-weight: bold;
+            }
+
+
+            .header a:hover {
+              background-color: #ccd2ff;
+              color: black;
+            }
+
+
+            .header a.active {
+              background-color: dodgerblue;
+              color: white;
+            }
+
+
+            .header-right {
+              float: right;
+            }
+
+
+            @media screen and (max-width: 500px) {
+              .header a {
+                float: none;
+                display: block;
+                text-align: left;
+              }
+              .header-right {
+                float: none;
+              }
+            }
+
+            input[type=text]{
+                 width: 100%;
+                 padding: 12px 20px;
+                 margin: 8px 0;
+                 box-sizing: border-box;
+                 border: 2px solid #ccd2ff;
+                 border-radius: 4px;
+            }
+            input[type=number],[type=date]{
+                 width: 10%;
+                 padding: 12px 20px;
+                 margin: 8px 0;
+                 box-sizing: border-box;
+                 border: 2px solid #ccd2ff;
+                 border-radius: 4px;
+            }
+            .button {
+            border-radius: 12px;
+             background-color: #50A0F0;
+              border: none;
+              color: white;
+              padding: 15px 32px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 16px;
+            }
+            .button:hover {
+            border-radius: 12px;
+             background-color: #87BEF5;
+              border: none;
+              color: white;
+              padding: 15px 32px;
+              text-align: center;
+              text-decoration: none;
+              display: inline-block;
+              font-size: 16px;
+            }
+    </style>
+
 </head>
 <body>
-<h1>Itt fog készülni az számla</h1>
+<div class="header">
+    <strong><span class="logo">Creation Page</span></strong>
+    <div class="header-right">
+        <a th:href="@{/list}">Back to list</a>
+        <a th:href="@{/home}">Home</a>
+        <a th:href="@{/logout}">Logout</a>
+    </div>
+</div>
 
 <form th:action = "@{/list/create/new}"  th:object="${invoice}" method="post">
     <label for="bname"><b>buyer Name</b></label>
     <div>
         <input th:field = "*{buyerName}" type="text"  placeholder="Enter Buyer Name" id="bname" required>
+    </div>
+
+    <label for="comment"><b>Comment</b></label>
+    <div>
+        <input th:field = "*{comment}" type="text"  placeholder="Enter Comment" id="comment" required>
+    </div>
+    <label for="iname"><b>Item</b></label>
+    <div>
+        <input th:field = "*{itemName}" type="text"  placeholder="Enter Item Name" id="iname" required>
     </div>
     <label for="idate"><b>Issue Date</b></label>
     <div>
@@ -20,30 +141,14 @@
     <div>
         <input th:field = "*{dueDate}" type="date"  placeholder="Enter Due Date" id="ddate" required>
     </div>
-    <label for="comment"><b>Comment</b></label>
-    <div>
-        <input th:field = "*{comment}" type="text"  placeholder="Enter Comment" id="comment" required>
-    </div>
-    <label for="iname"><b>Item</b></label>
-    <div>
-        <input th:field = "*{itemName}" type="text"  placeholder="Enter Item Name" id="iname" required>
-    </div>
     <label for="price"><b>Cost</b></label>
     <div>
         <input th:field = "*{price}" type="number"  placeholder="Enter Price" id="price" required>
     </div>
 
-        <button type="submit" class="btn btn-danger border-0 btn-sm">
+        <button class="button" type="submit">
             Create
         </button>
 </form>
-
-
-<form th:action="@{/list}" method="get">
-    <button type="submit" class="btn btn-danger border-0 btn-sm">
-        Back
-    </button>
-</form>
-
 </body>
 </html>
