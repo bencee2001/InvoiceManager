@@ -51,11 +51,11 @@ public class SecurityConfig{
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
                 .authorizeHttpRequests(auth->{
-                    auth.requestMatchers("/auth/**","**/*.css").permitAll();
+                    auth.requestMatchers("/auth/**","/styles/**","/js/**").permitAll();
                     auth.requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll();
                     auth.requestMatchers(HttpMethod.GET,"/admin").hasAuthority("ADMIN");
                     auth.requestMatchers("/list/create/**").hasAnyAuthority("BOOK","ADMIN");

@@ -3,127 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
-    <style>
-            .header {
-              overflow: hidden;
-              background-color: #f1f1f1;
-              padding: 20px 10px;
-            }
+    <link th:href="@{/styles/header.css}" rel="stylesheet" />
+    <link th:href="@{/styles/buttons.css}" rel="stylesheet" />
+    <link th:href="@{/styles/logAndRegSite.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/registration.js}"></script>
 
-            .header a {
-              float: left;
-              color: black;
-              text-align: center;
-              padding: 12px;
-              text-decoration: none;
-              font-size: 18px;
-              line-height: 25px;
-              border-radius: 4px;
-            }
-
-            .header span {
-              float: left;
-              color: black;
-              text-align: center;
-              padding: 12px;
-              text-decoration: none;
-              font-size: 18px;
-              line-height: 25px;
-              border-radius: 4px;
-            }
-
-            .header a.logo {
-              font-size: 25px;
-              font-weight: bold;
-            }
-
-            .header a:hover {
-              background-color: #ccd2ff;
-              color: black;
-            }
-
-            .header a.active {
-              background-color: dodgerblue;
-              color: white;
-            }
-
-            .header-right {
-              float: right;
-            }
-
-            @media screen and (max-width: 500px) {
-              .header a {
-                float: none;
-                display: block;
-                text-align: left;
-              }
-              .header-right {
-                float: none;
-              }
-            }
-
-            td span a{
-                  background-color: dodgerblue;
-                  color: white;
-                  display: inline-block;
-                  color: black;
-                  text-align: center;
-                  padding: 14px;
-                  text-decoration: none;
-                  font-size: 17px;
-                  border-radius: 5px;
-            }
-
-            .button:disabled {
-            border-radius: 12px;
-             background-color: #B4BAC3;
-              border: none;
-              color: white;
-              padding: 7px 16px;
-              text-align: center;
-              text-decoration: none;
-              display: inline-block;
-              font-size: 16px;
-            }
-
-            .button:enabled:hover {
-            border-radius: 12px;
-             background-color: #87BEF5;
-              border: none;
-              color: white;
-              padding: 7px 16px;
-              text-align: center;
-              text-decoration: none;
-              display: inline-block;
-              font-size: 16px;
-            }
-
-            .button:enabled {
-            border-radius: 12px;
-             background-color: #50A0F0;
-              border: none;
-              color: white;
-              padding: 7px 16px;
-              text-align: center;
-              text-decoration: none;
-              display: inline-block;
-              font-size: 16px;
-            }
-
-            .center {
-              text-align: center;
-              border: 3px solid #ccd2ff;
-            }
-
-            input {
-                 padding: 12px 20px;
-                 margin: 8px 0;
-                 box-sizing: border-box;
-                 border: 2px solid #ccd2ff;
-                 border-radius: 4px;
-            }
-
-    </style>
 </head>
 <body>
 <div class="header">
@@ -170,39 +54,7 @@
 <script th:inline="javascript">
 
      var roles = [[${userRoles}]];
-     roles=roles.filter(item => item.id!==3);
-
-     function isAnyChecked(){
-        for (let i = 0; i < roles.length; i++) {  //delete nem torol rendesen ezert kell a -1
-            if(document.getElementById('check'+roles[i].id)?.checked){
-               return true;
-            }
-        }
-        return false;
-     }
-
-     function success() {
-	    if(document.getElementById("uname").value!==""
-	      && document.getElementById("psw1").value.length>3
-	      && document.getElementById("psw2").value.length>3
-	      && document.getElementById("fname").value!==""
-	      && isAnyChecked()
-	      ){
-	         document.getElementById("button").disabled=false
-	      }else{
-	        document.getElementById("button").disabled=true
-	      }
-    }
-
-    let regForm = document.getElementById("regForm");
-    regForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        if(document.getElementById("psw1").value === document.getElementById("psw2").value){
-           document.getElementById("regForm").submit();
-        }else{
-           alert('Passwords are not matching.');
-        }
-   })
+     initRegistration(roles)
 
 </script>
 

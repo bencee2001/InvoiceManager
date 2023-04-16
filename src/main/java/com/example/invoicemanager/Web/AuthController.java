@@ -50,4 +50,9 @@ public class AuthController {
     public String toLogin() {
         return "login";
     }
+
+    @GetMapping("/test")
+    public String test(){
+        return "testPage";
+    }
 }

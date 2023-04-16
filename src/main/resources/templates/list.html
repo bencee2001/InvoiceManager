@@ -3,100 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <style>
-            .header {
-              overflow: hidden;
-              background-color: #f1f1f1;
-              padding: 20px 10px;
-            }
-
-            .header a {
-              float: left;
-              color: black;
-              text-align: center;
-              padding: 12px;
-              text-decoration: none;
-              font-size: 18px;
-              line-height: 25px;
-              border-radius: 4px;
-            }
-
-            .header span {
-              float: left;
-              color: black;
-              text-align: center;
-              padding: 12px;
-              text-decoration: none;
-              font-size: 18px;
-              line-height: 25px;
-              border-radius: 4px;
-            }
-
-            .header a.logo {
-              font-size: 25px;
-              font-weight: bold;
-            }
-
-            .header a:hover {
-              background-color: #ccd2ff;
-              color: black;
-            }
-
-            .header a.active {
-              background-color: dodgerblue;
-              color: white;
-            }
-
-            .header-right {
-              float: right;
-            }
-            @media screen and (max-width: 500px) {
-              .header a {
-                float: none;
-                display: block;
-                text-align: left;
-              }
-              .header-right {
-                float: none;
-              }
-            }
-
-            td {
-               border: 2px solid #ccd2ff;
-               position: relative;
-               padding: 18px;
-            }
-
-            tr:hover {
-               background: #f2f3ff;
-               outline: none;
-               cursor: pointer;
-            }
-
-            .button {
-                border-radius: 12px;
-                 background-color: #50A0F0;
-                  border: none;
-                  color: white;
-                  padding: 7px 16px;
-                  text-align: center;
-                  text-decoration: none;
-                  display: inline-block;
-                  font-size: 16px;
-                }
-
-            .button:hover {
-            border-radius: 12px;
-             background-color: #87BEF5;
-              border: none;
-              color: white;
-              padding: 7px 16px;
-              text-align: center;
-              text-decoration: none;
-              display: inline-block;
-              font-size: 16px;
-            }
-    </style>
+    <link th:href="@{/styles/header.css}" rel="stylesheet" />
+    <link th:href="@{/styles/buttons.css}" rel="stylesheet" />
+    <link th:href="@{/styles/tableBorderAndHover.css}" rel="stylesheet" />
+    <script type="text/javascript" th:src="@{/js/list.js}"></script>
 
 </head>
 <body>
@@ -140,11 +50,5 @@
         </tr>
     </tbody>
 </table>
-
-<script th:inline="javascript">
-    function viewInvoice(val) {
-        window.location.href = '/list/select/'+val
-    }
-</script>
 </body>
 </html>

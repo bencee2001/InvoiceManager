@@ -1,0 +1,11 @@
+td {
+    border: 2px solid #ccd2ff;
+    position: relative;
+    padding: 18px;
+}
+
+tr:hover {
+    background: #f2f3ff;
+    outline: none;
+    cursor: pointer;
+}

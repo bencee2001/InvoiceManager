@@ -1,0 +1,12 @@
+.center {
+    text-align: center;
+    border: 3px solid #ccd2ff;
+}
+
+input {
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccd2ff;
+    border-radius: 4px;
+}
