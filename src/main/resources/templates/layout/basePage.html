@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/styles/header.css}" rel="stylesheet" />
+  <link th:href="@{/styles/buttons.css}" rel="stylesheet" />
+  <title layout:fragment="title">InvoiceManager</title>
+</head>
+<body>
+  <div class="header">
+    <div layout:fragment="pageName">
+      <strong><span sec:authentication="name" class="logo">Login</span></strong>
+    </div>
+    <div class="header-right" layout:fragment="baseNavigation">
+      <a th:href="@{/logout}">Logout</a>
+    </div>
+    <div class="header-right" layout:fragment="navigation">
+      <a th:href="@{/home}">Home</a>
+    </div>
+  </div>
+
+  <div layout:fragment="content">
+    <span>Hello bello én csak ide feljárok</span>
+  </div>
+</body>
+</html>

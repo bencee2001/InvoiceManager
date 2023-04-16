@@ -1,10 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basePage.html}">
 <head>
     <meta charset="UTF-8">
-    <title>Login</title>
-    <link th:href="@{/styles/header.css}" rel="stylesheet" />
-    <link th:href="@{/styles/buttons.css}" rel="stylesheet" />
     <link th:href="@{/styles/logAndRegSite.css}" rel="stylesheet" />
     <script type="text/javascript" th:src="@{/js/login.js}"></script>
 
@@ -12,13 +10,17 @@
 <body>
 
 <div class="header">
-    <strong><span  class="logo">Login</span></strong>
-    <div class="header-right">
-        <a th:href="@{/auth/registration}">Sign in</a>
+    <div layout:fragment="pageName">
+        <strong><span  class="logo">Login</span></strong>
+    </div>
+    <div class="header-right" layout:fragment="navigation">
+    </div>
+    <div class="header-right" layout:fragment="baseNavigation">
+        <a th:href="@{/auth/registration}">Sign up</a>
     </div>
 </div>
 
-<div class="center">
+<div class="center" layout:fragment="content">
     <p th:if="${loginError}" class="error">Wrong user or password</p>
     <form th:action="@{/auth/login}" method="post">
         <label  for="username">Username</label>:

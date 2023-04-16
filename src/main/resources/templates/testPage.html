@@ -1,17 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{basePage.html}">
+      layout:decorate="~{fragments/basePage.html}">
 <head>
-  <title>Layout Dialect Example</title>
-  <link th:href="@{/styles/test.css}" rel="stylesheet" />
+
 </head>
 <body>
-<section layout:fragment="custom-content">
-  <p class="red">This is a custom content that you can provide</p>
-</section>
-<footer>
-  <p layout:fragment="custom-footer">This is some footer content
-    that you can change</p>
-</footer>
+<div class="header-right" layout:fragment="basic">
+  <a th:href="@{/auth/registration}">Hello</a>
+</div>
+
 </body>
 </html>

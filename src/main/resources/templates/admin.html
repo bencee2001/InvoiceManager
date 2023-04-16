@@ -1,63 +1,55 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basePage.html}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link th:href="@{/styles/header.css}" rel="stylesheet" />
     <link th:href="@{/styles/dropDownList.css}" rel="stylesheet" />
-    <link th:href="@{/styles/buttons.css}" rel="stylesheet" />
     <link th:href="@{/styles/tableBorder.css}" rel="stylesheet" />
     <script type="text/javascript" th:src="@{/js/admin.js}"></script>
 
-
-
 </head>
 <body>
-<div class="header">
-    <strong><span class="logo">Admin Site</span></strong>
-    <div class="header-right">
-        <a th:href="@{/home}">Home</a>
-        <a th:href="@{/logout}">Logout</a>
-    </div>
+
+<div layout:fragment="content">
+    <table style="margin-left: auto; margin-right: auto;">
+        <tbody>
+            <tr>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Role Selector</th>
+
+            </tr>
+
+            <tr th:each="user : ${users}">
+                <div>
+                    <form th:action="@{|/admin/save/${user.userName}|}" method="post">
+                        <td th:text="${user.userName}"></td>
+                        <td th:text="${user.name}"></td>
+                        <td>
+
+                                <div th:id="|listOf${user.userName}|" class="dropdown-check-list" tabindex="100">
+                                    <span class="anchor" >Select Role</span>
+                                    <ul class="items" th:each="role:${roles}">
+                                        <li><input th:attr="onclick=|checkForOneChecked('${user.userName}')|" th:id="|check${user.userName}${role.id}|" th:name="newRoles" th:value="${role.id}" type="checkbox" th:text="${role.name}" th:checked="${user.getRoles().contains(role)}" /> </li>
+                                    </ul>
+                                </div>
+                               <button  th:id="|saveButton${user.userName}|"  type="submit" class="button">
+                                   Save
+                               </button>
+
+                        </td>
+                    </form>
+                        <td>
+                            <button th:attr="onclick=|selectUser('${user.userName}')|" class="button">
+                                X
+                            </button>
+                        </td>
+                    </div>
+            </tr>
+        </tbody>
+    </table>
 </div>
-
-<table style="margin-left: auto; margin-right: auto;">
-    <tbody>
-        <tr>
-            <th>Username</th>
-            <th>Name</th>
-            <th>Role Selector</th>
-
-        </tr>
-
-        <tr th:each="user : ${users}">
-            <div>
-                <form th:action="@{|/admin/save/${user.userName}|}" method="post">
-                    <td th:text="${user.userName}"></td>
-                    <td th:text="${user.name}"></td>
-                    <td>
-
-                            <div th:id="|listOf${user.userName}|" class="dropdown-check-list" tabindex="100">
-                                <span class="anchor" >Select Role</span>
-                                <ul class="items" th:each="role:${roles}">
-                                    <li><input th:attr="onclick=|checkForOneChecked('${user.userName}')|" th:id="|check${user.userName}${role.id}|" th:name="newRoles" th:value="${role.id}" type="checkbox" th:text="${role.name}" th:checked="${user.getRoles().contains(role)}" /> </li>
-                                </ul>
-                            </div>
-                           <button  th:id="|saveButton${user.userName}|"  type="submit" class="button">
-                               Save
-                           </button>
-
-                    </td>
-                </form>
-                    <td>
-                        <button th:attr="onclick=|selectUser('${user.userName}')|" class="button">
-                            X
-                        </button>
-                    </td>
-                </div>
-        </tr>
-    </tbody>
-</table>
 <script th:inline="javascript">
     var users = [[${users}]];
     var roles = [[${roles}]];

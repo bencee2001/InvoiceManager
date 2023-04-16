@@ -1,55 +1,59 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="https://www.thymeleaf.org/">
+<html lang="en" xmlns:th="https://www.thymeleaf.org/" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basePage.html}">
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
-    <link th:href="@{/styles/header.css}" rel="stylesheet" />
-    <link th:href="@{/styles/buttons.css}" rel="stylesheet" />
     <link th:href="@{/styles/logAndRegSite.css}" rel="stylesheet" />
     <script type="text/javascript" th:src="@{/js/registration.js}"></script>
-
 </head>
 <body>
 <div class="header">
-    <strong><span  class="logo">Registration</span></strong>
-    <div class="header-right">
+    <div layout:fragment="pageName">
+        <strong><span  class="logo">Registration</span></strong>
+    </div>
+    <div layout:fragment="navigation">
+
+    </div>
+    <div class="header-right" layout:fragment="baseNavigation">
         <a th:href="@{/auth/login}">Login</a>
     </div>
 </div>
+<div layout:fragment="content">
+    <form id="regForm" th:action="@{/auth/registration/new}" th:object="${newUser}" method="post">
+        <div class = center>
+            <div class=fromTop>
+                <label for="fname"><b>Full Name</b></label>
+                <div>
+                    <input th:onkeyup="success()" th:field = "*{name}" type="text"  placeholder="Enter Username" id="fname" required>
+                </div>
+                <label for="uname"><b>Username</b></label>
+                <div>
+                    <input th:onkeyup="success()" type="text"  th:field = "*{userName}" placeholder="Enter Username" id="uname" required>
+                </div>
+                <div>
+                    <label for="psw1"><b>Password(At least 4 character)</b></label>
+                </div>
+                <div>
+                    <input th:onkeyup="success()" type="password" th:field = "*{password}"  placeholder="Enter Password" id="psw1" required>
+                </div>
+                <div>
+                    <label for="psw2"><b>Confirm Password</b></label>
+                </div>
+                <div>
+                    <input th:onkeyup="success()" type="password" placeholder="Enter Password" id="psw2" required>
+                </div>
+                <div th:each="role:${userRoles}" th:if="${role.id!=3}">
+                    <input  th:id="|check${role.id}|" th:onclick="success()"  th:name="newRoles" th:value="${role.id}" type="checkbox" th:text="${role.name}"/>
+                </div>
+                <div>
+                    <button class="button" id="button">Register</button>
+                </div>
 
-<form id="regForm" th:action="@{/auth/registration/new}" th:object="${newUser}" method="post">
-    <div class = center>
-        <div class=fromTop>
-            <label for="fname"><b>Full Name</b></label>
-            <div>
-                <input th:onkeyup="success()" th:field = "*{name}" type="text"  placeholder="Enter Username" id="fname" required>
             </div>
-            <label for="uname"><b>Username</b></label>
-            <div>
-                <input th:onkeyup="success()" type="text"  th:field = "*{userName}" placeholder="Enter Username" id="uname" required>
-            </div>
-            <div>
-                <label for="psw1"><b>Password(At least 4 character)</b></label>
-            </div>
-            <div>
-                <input th:onkeyup="success()" type="password" th:field = "*{password}"  placeholder="Enter Password" id="psw1" required>
-            </div>
-            <div>
-                <label for="psw2"><b>Confirm Password</b></label>
-            </div>
-            <div>
-                <input th:onkeyup="success()" type="password" placeholder="Enter Password" id="psw2" required>
-            </div>
-            <div th:each="role:${userRoles}" th:if="${role.id!=3}">
-                <input  th:id="|check${role.id}|" th:onclick="success()"  th:name="newRoles" th:value="${role.id}" type="checkbox" th:text="${role.name}"/>
-            </div>
-            <div>
-                <button class="button" id="button">Register</button>
-            </div>
-
         </div>
-    </div>
-</form>
+    </form>
+</div>
 
 <script th:inline="javascript">
 

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout/basePage.html}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -10,26 +11,27 @@
 <body>
 
 <div class="header">
-    <strong><span class="logo" th:text="|${invoice.buyerName}'s invoice|"></span></strong>
-    <div class="header-right">
+    <div layout:fragment="pageName">
+        <strong><span class="logo" th:text="|${invoice.buyerName}'s invoice|"></span></strong>
+    </div>
+    <div class="header-right" layout:fragment="navigation">
         <a th:href="@{/list}">Back to list</a>
         <a th:href="@{/home}">Home</a>
-        <a th:href="@{/logout}">Logout</a>
     </div>
 </div>
-
-<label>Buyer Name</label>:<br />
-<input type="text" th:value="${invoice.buyerName}" readonly/><br />
-<label>Issue Date</label>:<br />
-<input type="text" th:value="${invoice.issueDate}" readonly/><br />
-<label>DueDate</label>:<br />
-<input type="text" th:value="${invoice.dueDate}" readonly/><br />
-<label>Comment</label>:<br />
-<input type="text" th:value="${invoice.comment}" readonly/><br />
-<label>Item Name</label>:<br />
-<input type="text" th:value="${invoice.itemName}" readonly/><br />
-<label>Price</label>:<br />
-<input type="text" th:value="${invoice.price}" readonly/><br />
-
+<div layout:fragment="content">
+    <label>Buyer Name</label>:<br />
+    <input type="text" th:value="${invoice.buyerName}" readonly/><br />
+    <label>Issue Date</label>:<br />
+    <input type="text" th:value="${invoice.issueDate}" readonly/><br />
+    <label>DueDate</label>:<br />
+    <input type="text" th:value="${invoice.dueDate}" readonly/><br />
+    <label>Comment</label>:<br />
+    <input type="text" th:value="${invoice.comment}" readonly/><br />
+    <label>Item Name</label>:<br />
+    <input type="text" th:value="${invoice.itemName}" readonly/><br />
+    <label>Price</label>:<br />
+    <input type="text" th:value="${invoice.price}" readonly/><br />
+</div>
 </body>
 </html>
