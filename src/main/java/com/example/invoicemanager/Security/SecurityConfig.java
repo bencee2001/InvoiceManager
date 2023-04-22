@@ -27,7 +27,6 @@ public class SecurityConfig{
 
     private final UserDetailsService userDetailsService;
     private final MyLoginSuccessHandler loginSuccessHandler;
-    private final MyLoginFailureHandler loginFailureHandler;
 
     @Bean
     public AuthenticationProvider authenticationProvider(){

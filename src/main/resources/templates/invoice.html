@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/basePage.html}">
 <head>
     <meta charset="UTF-8">
@@ -20,18 +20,23 @@
     </div>
 </div>
 <div layout:fragment="content">
-    <label>Buyer Name</label>:<br />
-    <input type="text" th:value="${invoice.buyerName}" readonly/><br />
-    <label>Issue Date</label>:<br />
-    <input type="text" th:value="${invoice.issueDate}" readonly/><br />
-    <label>DueDate</label>:<br />
-    <input type="text" th:value="${invoice.dueDate}" readonly/><br />
-    <label>Comment</label>:<br />
-    <input type="text" th:value="${invoice.comment}" readonly/><br />
-    <label>Item Name</label>:<br />
-    <input type="text" th:value="${invoice.itemName}" readonly/><br />
-    <label>Price</label>:<br />
-    <input type="text" th:value="${invoice.price}" readonly/><br />
+    <form th:action = "@{/list/update}"  th:object="${invoice}" method="post">
+        <input th:field="*{id}" th:value="*{id}" hidden>
+        <label>Buyer Name</label>:<br />
+        <input th:field="*{buyerName}" type="text" readonly /><br />
+        <label>Issue Date</label>:<br />
+        <input th:field="*{issueDate}" type="date" th:value="*{#dates.format(issueDate,'yyyy-MM-dd')}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
+        <label>DueDate</label>:<br />
+        <input th:field="*{dueDate}" type="date" th:value="*{#dates.format(dueDate,'yyyy-MM-dd')}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
+        <label>Comment</label>:<br />
+        <input th:field="*{comment}" type="text" th:value="*{comment}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
+        <label>Item Name</label>:<br />
+        <input th:field="*{itemName}" type="text" th:value="*{itemName}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
+        <label>Price</label>:<br />
+        <input th:field="*{price}" type="number" th:value="*{price}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
+
+        <input class="button" value="Save Changes" type="submit" sec:authorize="hasAnyAuthority('ADMIN', 'BOOK')">
+    </form>
 </div>
 </body>
 </html>

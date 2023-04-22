@@ -7,13 +7,6 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 
 @Configuration
 public class LayoutConfig {
-
-    /*public SpringTemplateEngine thymeleafLayoutDialect(){
-        SpringTemplateEngine engine = new SpringTemplateEngine();
-        engine.addDialect(layoutDialect());
-        return engine;
-    }*/
-
     @Bean
     public LayoutDialect layoutDialect(){
         return new LayoutDialect();

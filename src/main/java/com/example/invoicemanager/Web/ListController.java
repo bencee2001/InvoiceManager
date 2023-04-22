@@ -1,6 +1,7 @@
 package com.example.invoicemanager.Web;
 
-import com.example.invoicemanager.Model.invoiceDTO;
+import com.example.invoicemanager.Model.dto.InvoiceCreateDTO;
+import com.example.invoicemanager.Model.dto.InvoiceUpdateDTO;
 import com.example.invoicemanager.Service.InvoiceService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -36,13 +37,20 @@ public class ListController {
 
     @GetMapping("/create")
     public String toCreateInvoice(Model model){
-        model.addAttribute("invoice",new invoiceDTO());
+        model.addAttribute("invoice",new InvoiceCreateDTO());
         return "create";
     }
 
     @PostMapping("/create/new")
-    public String createInvoice(@ModelAttribute invoiceDTO mInvoice) throws ParseException {
-        invoiceService.saveToDatabase(mInvoice.toInvoice());
+    public String createInvoice(@ModelAttribute InvoiceCreateDTO invoiceCreateDTO) throws ParseException {
+        invoiceService.saveToDatabase(invoiceCreateDTO.toInvoice());
+        return "redirect:/list";
+    }
+
+    @PostMapping("/update")
+    public String updateInvoice(@ModelAttribute InvoiceUpdateDTO invoiceUpdateDTO) throws ParseException {
+        System.out.println(invoiceUpdateDTO.getId());
+        invoiceService.saveToDatabase(invoiceUpdateDTO.toInvoice());
         return "redirect:/list";
     }
 }

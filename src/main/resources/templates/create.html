@@ -17,7 +17,7 @@
     </div>
 </div>
 <div layout:fragment="content">
-    <form th:action = "@{/list/create/new}"  th:object="${invoice}" method="post">
+    <form th:action = "@{/list/update}"  th:object="${invoice}" method="post">
         <label for="bname"><b>buyer Name</b></label>
         <div>
             <input th:field = "*{buyerName}" type="text"  placeholder="Enter Buyer Name" id="bname" required>

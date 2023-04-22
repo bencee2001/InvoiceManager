@@ -1,5 +1,6 @@
-package com.example.invoicemanager.Model;
+package com.example.invoicemanager.Model.dto;
 
+import com.example.invoicemanager.Model.Invoice;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -8,7 +9,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
-public class invoiceDTO {
+public class InvoiceUpdateDTO {
+    private Integer id;
     private String buyerName;
     private String issueDate;
     private String dueDate;
@@ -21,6 +23,7 @@ public class invoiceDTO {
         Date iDate = new SimpleDateFormat("yyyy-MM-dd").parse(issueDate);
         Date dDate = new SimpleDateFormat("yyyy-MM-dd").parse(dueDate);
         return Invoice.builder()
+                .id(id)
                 .buyerName(buyerName)
                 .issueDate(iDate)
                 .dueDate(dDate)
