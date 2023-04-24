@@ -2,6 +2,8 @@ package com.example.invoicemanager.Model;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -19,7 +21,10 @@ public class Invoice {
     private Integer id;
 
     @NonNull
-    private String buyerName;
+    @ManyToOne
+    @JoinColumn(name="user_name")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private User user;
 
     @NonNull
     private Date issueDate;

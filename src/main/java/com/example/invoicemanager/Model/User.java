@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name="users")
@@ -12,6 +13,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class User {
 
     @Id
@@ -23,6 +25,9 @@ public class User {
 
     @NonNull
     private String password;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Bookkeeper bookkeeper;
 
     private Date lastLogin;
 

@@ -30,8 +30,7 @@
             <tr th:each="invoice : ${invoices}" th:attr="onclick=|viewInvoice('${invoice.id}')|" >
                 <div>
 
-                        <td th:text="${invoice.buyerName}"></td>
-                        <!--td th:text="${invoice.user.name}"></td-->
+                        <td th:text="${invoice.user.name}"></td>
                         <td th:text="${invoice.issueDate}"></td>
                         <td th:text="${invoice.dueDate}"></td>
                         <td th:text="${invoice.comment}"></td>

@@ -1,6 +1,8 @@
 package com.example.invoicemanager.Model.dto;
 
 import com.example.invoicemanager.Model.Invoice;
+import com.example.invoicemanager.Model.User;
+import com.example.invoicemanager.Repository.UserRepository;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -11,7 +13,7 @@ import java.util.Date;
 @Data
 public class InvoiceUpdateDTO {
     private Integer id;
-    private String buyerName;
+    private User user;
     private String issueDate;
     private String dueDate;
     private String itemName;
@@ -24,7 +26,7 @@ public class InvoiceUpdateDTO {
         Date dDate = new SimpleDateFormat("yyyy-MM-dd").parse(dueDate);
         return Invoice.builder()
                 .id(id)
-                .buyerName(buyerName)
+                .user(user)
                 .issueDate(iDate)
                 .dueDate(dDate)
                 .itemName(itemName)

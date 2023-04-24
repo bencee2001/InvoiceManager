@@ -2,8 +2,11 @@ package com.example.invoicemanager.Web;
 
 import com.example.invoicemanager.Model.dto.InvoiceCreateDTO;
 import com.example.invoicemanager.Model.dto.InvoiceUpdateDTO;
+import com.example.invoicemanager.Repository.UserRepository;
 import com.example.invoicemanager.Service.InvoiceService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -13,13 +16,17 @@ import java.text.ParseException;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/list")
-public class ListController {
+public class InvoiceController {
 
     private final InvoiceService invoiceService;
+    private final UserRepository userRepository;
 
     @GetMapping
     public String getList(Model model){
-        model.addAttribute("invoices",invoiceService.getInvoices());
+        UserDetails user = (UserDetails)SecurityContextHolder
+                .getContext().getAuthentication().getPrincipal();
+
+        model.addAttribute("invoices",invoiceService.getInvoicesByUser(userRepository.getReferenceById(user.getUsername())));
         return "list";
     }
 

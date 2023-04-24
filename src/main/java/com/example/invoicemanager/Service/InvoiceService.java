@@ -1,6 +1,7 @@
 package com.example.invoicemanager.Service;
 
 import com.example.invoicemanager.Model.Invoice;
+import com.example.invoicemanager.Model.User;
 import com.example.invoicemanager.Repository.InvoiceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,5 +36,9 @@ public class InvoiceService {
             return null;
         }
         return invoice.get();
+    }
+
+    public List<Invoice> getInvoicesByUser(User user) {
+        return invoiceRepository.findAllByUser(user);
     }
 }

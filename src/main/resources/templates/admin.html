@@ -49,13 +49,14 @@
             </tr>
         </tbody>
     </table>
-</div>
-<script th:inline="javascript">
-    var users = [[${users}]];
-    var roles = [[${roles}]];
+    <script th:inline="javascript" defer>
+        var users = [[${users}]];
+        var roles = [[${roles}]];
 
-    initChecklist(users);
-</script>
+        initChecklist(users);
+    </script>
+</div>
+
 
 </body>
 </html>

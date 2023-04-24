@@ -1,4 +1,4 @@
-function initChecklist(users) {
+function initChecklist(users, roles) {
     users.forEach(user => {
         const checkList = document.getElementById('listOf' + user.userName);
         checkList.getElementsByClassName('anchor')[0].onclick = function (evt) {
@@ -9,7 +9,6 @@ function initChecklist(users) {
         }
     });
 }
-
 function selectUser(val) {
     window.location.href = '/admin/delete/' + val
 }
