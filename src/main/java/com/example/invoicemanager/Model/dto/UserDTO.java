@@ -3,19 +3,24 @@ package com.example.invoicemanager.Model.dto;
 import com.example.invoicemanager.Model.Role;
 import com.example.invoicemanager.Model.User;
 import com.example.invoicemanager.Repository.BookkeeperRepository;
+import com.example.invoicemanager.Repository.UserRepository;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.Set;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class UserDTO {
     private String userName;
     private String name;
-    private String password;
     private Long bookkeeper_Id;
+    private String booker_name;
     private Date lastLogin;
     private Set<Role> roles;
     private Integer failedLoginAttempts;
@@ -24,25 +29,19 @@ public class UserDTO {
         return UserDTO.builder()
                 .userName(user.getUserName())
                 .name(user.getName())
-                .password(user.getPassword())
                 .bookkeeper_Id(
                         user.getBookkeeper()==null ? null : user.getBookkeeper().getId()
                 )
-                .lastLogin(user.getLastLogin())
+                .booker_name(
+                        user.getBookkeeper()==null ? null : user.getBookkeeper().getUser().getName()
+                )
                 .roles(user.getRoles())
+                .lastLogin(user.getLastLogin())
                 .failedLoginAttempts(user.getFailedLoginAttempts())
                 .build();
     }
 
-    public User toUser(BookkeeperRepository bookkeeperRepository){
-        return User.builder()
-                .userName(this.getUserName())
-                .name(this.getName())
-                .password(this.getPassword())
-                .bookkeeper(bookkeeperRepository.getReferenceById(this.getBookkeeper_Id()))
-                .lastLogin(this.getLastLogin())
-                .roles(this.getRoles())
-                .failedLoginAttempts(this.getFailedLoginAttempts())
-                .build();
+    public User toUser(UserRepository userRepository){
+        return userRepository.getReferenceById(this.userName);
     }
 }

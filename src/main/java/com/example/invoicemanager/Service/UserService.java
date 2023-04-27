@@ -1,6 +1,7 @@
 package com.example.invoicemanager.Service;
 
 import com.example.invoicemanager.Model.Bookkeeper;
+import com.example.invoicemanager.Model.Invoice;
 import com.example.invoicemanager.Model.Role;
 import com.example.invoicemanager.Model.User;
 import com.example.invoicemanager.Model.dto.UserDTO;
@@ -9,9 +10,9 @@ import com.example.invoicemanager.Repository.RoleRepository;
 import com.example.invoicemanager.Repository.UserRepository;
 import com.example.invoicemanager.libs.Error.LogedInUserDeleteException;
 import com.example.invoicemanager.libs.Error.NoSelectedRoleException;
+import com.example.invoicemanager.libs.Error.NoSuchBookkeeperExcpetion;
 import com.example.invoicemanager.libs.Error.NoSuchUserExpection;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.digester.Rule;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,8 +31,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
     private final BookkeeperRepository bookkeeperRepository;
+    private final BookkeeperService bookService;
+    private final InvoiceService invoiceService;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final String BOOKKEEPER_ROLE_ID_STR = "2";
+    private final int BOOKKEEPER_ROLE_POS = 1;
+
 
     public List<User> getUsers(){
         return userRepository.findAll();
@@ -53,8 +60,10 @@ public class UserService {
         return optUser.get();
     }
 
-    public void saveUser(User user, List<String> roles){
+    public void saveUser(UserDTO userDTO, List<String> roles){
         Set<Role> roleSet = new HashSet<>();
+        User user = userDTO.toUser(userRepository);
+
         roles.forEach(role->{
             roleSet.add(roleRepository.getReferenceById(Integer.valueOf(role)));
         });
@@ -62,6 +71,20 @@ public class UserService {
         user.setRoles(roleSet);
         user.setFailedLoginAttempts(0);
         userRepository.save(user);
+        Bookkeeper bookkeeper = user.getBookkeeper();
+        Set<User> userSet = bookkeeper.getClients();
+        userSet.add(user);
+        bookkeeper.setClients(userSet);
+        bookkeeperRepository.save(bookkeeper);
+        if(roles.contains(BOOKKEEPER_ROLE_ID_STR))
+            bookkeeperRepository.save(new Bookkeeper(user));
+    }
+
+    public UserDTO getPrincipalUserDTO(){
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = principal.getUsername();
+        User user = userRepository.findById(username).get();
+        return UserDTO.toUserDTO(user);
     }
 
     public User getPrincipalUser(){
@@ -97,12 +120,21 @@ public class UserService {
         }
     }
 
-    public void saveNewRoles(List<String> newRoleIds,User user) throws NoSelectedRoleException {
+    public void saveNewRoles(List<String> newRoleIds,User user) throws NoSelectedRoleException, NoSuchBookkeeperExcpetion {
         if(newRoleIds.size()==0){
             throw new NoSelectedRoleException("At least one role needed.");
         }
         Set<Role> newRolesForUser = new HashSet<>();
         List<Role> roleList = roleRepository.findAll();
+        if(user.getRoles().contains(roleList.get(BOOKKEEPER_ROLE_POS)) &&
+                !(newRoleIds.contains(BOOKKEEPER_ROLE_ID_STR))){
+            Bookkeeper book = bookService.getBookkeeperFromUser(user);
+            bookkeeperRepository.delete(book);
+        }
+        if(!(user.getRoles().contains(roleList.get(BOOKKEEPER_ROLE_POS))) &&
+                (newRoleIds.contains(BOOKKEEPER_ROLE_ID_STR))){
+            bookkeeperRepository.save(new Bookkeeper(user));
+        }
         roleList.stream().filter(role -> newRoleIds.contains(String.valueOf(role.getId())))
                 .toList().forEach(role -> newRolesForUser.add(role));
         setSecurityContext(roleList, newRoleIds,user.getUserName());
@@ -120,5 +152,16 @@ public class UserService {
             Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
             SecurityContextHolder.getContext().setAuthentication(newAuth);
         }
+    }
+
+    public int getNewCount() {
+        User user = getPrincipalUser();
+        List<Invoice> invoices = invoiceService.getInvoicesByUser(user);
+        int cnt=0;
+        for (Invoice invoice : invoices) {
+            if (invoice.getIsNew())
+                cnt++;
+        }
+        return cnt;
     }
 }

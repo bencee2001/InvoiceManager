@@ -40,4 +40,6 @@ public class Invoice {
 
     @NonNull
     private BigDecimal price;
+
+    private Boolean isNew;
 }

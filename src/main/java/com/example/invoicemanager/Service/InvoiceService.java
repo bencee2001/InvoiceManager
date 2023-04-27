@@ -19,7 +19,7 @@ public class InvoiceService {
         return invoiceRepository.findAll();
     }
 
-    public void saveToDatabase(Invoice invoice){
+    public void save(Invoice invoice){
         invoiceRepository.save(invoice);
     }
 
@@ -32,13 +32,20 @@ public class InvoiceService {
 
     public Invoice getInvoiceById(int id) {
         Optional<Invoice> invoice = invoiceRepository.findById(id);
-        if(invoice.isEmpty()){
-            return null;
-        }
-        return invoice.get();
+        return invoice.orElse(null);
     }
 
     public List<Invoice> getInvoicesByUser(User user) {
         return invoiceRepository.findAllByUser(user);
+    }
+
+    public int getNewInvoiceCountByUser(User user) {
+        List<Invoice> invoices = getInvoicesByUser(user);
+        int newCnt=0;
+        for (Invoice invoice : invoices) {
+            if (invoice.getIsNew())
+                newCnt++;
+        }
+        return newCnt;
     }
 }

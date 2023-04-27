@@ -1,14 +1,15 @@
 package com.example.invoicemanager.Model;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Set;
 
 @Entity
 @Getter
 @Setter
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class Bookkeeper {
 
     @Id
@@ -17,6 +18,7 @@ public class Bookkeeper {
 
     @OneToOne
     @JoinColumn(name="username")
+    @NonNull
     private User user;
 
     @OneToMany

@@ -17,15 +17,19 @@
     </div>
 </div>
 <div layout:fragment="content">
-    <form th:action = "@{/list/update}"  th:object="${invoice}" method="post">
-        <label for="bname"><b>buyer Name</b></label>
+    <form th:action = "@{/list/create/new}"  th:object="${invoice}" method="post">
+        <label><b>Buyer</b></label>
         <div>
-            <input th:field = "*{buyerName}" type="text"  placeholder="Enter Buyer Name" id="bname" required>
+            <label>
+                <select th:field="*{userName}">
+                    <option th:each="client : ${clients}" th:value="${client.userName}" th:text="${client.name}">
+                    </option>
+                </select>
+            </label>
         </div>
-
         <label for="comment"><b>Comment</b></label>
         <div>
-            <input th:field = "*{comment}" type="text"  placeholder="Enter Comment" id="comment" required>
+            <input th:field = "*{comment}" type="text"   placeholder="Enter Comment" id="comment" required>
         </div>
         <label for="iname"><b>Item</b></label>
         <div>
@@ -43,6 +47,7 @@
         <div>
             <input th:field = "*{price}" type="number"  placeholder="Enter Price" id="price" required>
         </div>
+        <input th:field="*{isNew}" th:value="true" hidden/>
 
         <button class="button" type="submit">
             Create

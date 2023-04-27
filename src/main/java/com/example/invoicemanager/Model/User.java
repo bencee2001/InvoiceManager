@@ -18,7 +18,7 @@ public class User {
 
     @Id
     @NonNull
-    private String userName;
+    private String userName;  //tanulsag mindig Long ID legyen
 
     @NonNull
     private String name;

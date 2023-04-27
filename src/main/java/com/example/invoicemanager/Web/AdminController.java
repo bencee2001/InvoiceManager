@@ -4,10 +4,7 @@ import com.example.invoicemanager.Model.User;
 import com.example.invoicemanager.Service.BookkeeperService;
 import com.example.invoicemanager.Service.RoleService;
 import com.example.invoicemanager.Service.UserService;
-import com.example.invoicemanager.libs.Error.BookkeeperHasClientsExpection;
-import com.example.invoicemanager.libs.Error.LogedInUserDeleteException;
-import com.example.invoicemanager.libs.Error.NoSelectedRoleException;
-import com.example.invoicemanager.libs.Error.NoSuchUserExpection;
+import com.example.invoicemanager.libs.Error.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -35,10 +32,11 @@ public class AdminController {
 
     @PostMapping("/save/{username}")
     public String saveNewRoles(@RequestParam("newRoles") List<String> roleIds,
-                               @PathVariable String username) throws NoSelectedRoleException, NoSuchUserExpection {
+                               @PathVariable String username) throws NoSelectedRoleException, NoSuchUserExpection, NoSuchBookkeeperExcpetion {
         User user = userService.getUserByUsername(username);
-        if(bookService.checkIfHaveClients(user))
+        if(bookService.checkIfHaveClients(user)) {
             roleIds.add(bookkeeperRoleId);
+        }
         userService.saveNewRoles(roleIds,user);
         return "redirect:/admin";
     }

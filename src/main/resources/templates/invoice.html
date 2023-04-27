@@ -7,12 +7,14 @@
     <link th:href="@{/styles/header.css}" rel="stylesheet" />
     <link th:href="@{/styles/input.css}" rel="stylesheet" />
 
+
+
 </head>
 <body>
 
 <div class="header">
     <div layout:fragment="pageName">
-        <strong><span class="logo" th:text="|${invoice.user.name}'s invoice|"></span></strong>
+        <strong><span class="logo" th:text="|${invoice.buyerName}'s invoice|"></span></strong>
     </div>
     <div class="header-right" layout:fragment="navigation">
         <a th:href="@{/list}">Back to list</a>
@@ -22,15 +24,15 @@
 <div layout:fragment="content">
     <form th:action = "@{/list/update}"  th:object="${invoice}" method="post">
         <input th:field="*{id}" th:value="*{id}" hidden>
-        <input th:field="*{user}" th:value="*{user}" hidden>
+        <input th:field="*{userName}" th:value="*{userName}" hidden>
         <label>Buyer Name</label>:<br />
-        <input th:value="*{user.name}" type="text" readonly /><br />
+        <input th:value="*{buyerName}" type="text" readonly /><br />
         <label>Issue Date</label>:<br />
         <input id="issueDate" name="issueDate" type="date" th:value="*{#dates.format(issueDate,'yyyy-MM-dd')}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
         <label>DueDate</label>:<br />
         <input id="dueDate" name="dueDate" type="date" th:value="*{#dates.format(dueDate,'yyyy-MM-dd')}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
         <label>Comment</label>:<br />
-        <input th:field="*{comment}" type="text" th:value="*{comment}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
+        <input th:field="*{comment}" type="text" th:value="*{comment}"  th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
         <label>Item Name</label>:<br />
         <input th:field="*{itemName}" type="text" th:value="*{itemName}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
         <label>Price</label>:<br />
@@ -38,6 +40,8 @@
 
         <input class="button" value="Save Changes" type="submit" sec:authorize="hasAnyAuthority('ADMIN', 'BOOK')">
     </form>
+
+
 </div>
 </body>
 </html>

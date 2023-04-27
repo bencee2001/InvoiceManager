@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <div class="header">
@@ -29,12 +30,38 @@
                         </div>
                         <strong><span>Role/Roles:</span></strong>
                         <span th:each="role : ${object.roles}" th:text="|${role.name},  |"></span>
-
+                        <div>
+                            <strong><span>Your Bookkeeper:</span></strong>
+                            <span th:text="${object.booker_name}"></span>
+                        </div>
+                       <div>
+                            <strong><span>New Invoicies:</span></strong>
+                            <span id="count" th:text="${newInvoiceCount}"></span>
+                        </div>
                    </span>
                </td>
            </tr>
         </tbody>
     </table>
+    <script th:inline="javascript">
+
+        $(document).ready(function(){
+            setInterval(refreshNewCount, 1000);
+        });
+
+        function refreshNewCount(){
+            $.ajax({
+                url: '/refreshCount',
+                type: 'GET',
+                data:{
+                    [[${_csrf.parameterName}]] : [[${_csrf.token}]]
+                },
+                success: function (data){
+                    document.getElementById('count').textContent=data;
+                }
+            })
+        }
+    </script>
 </div>
 
 </body>

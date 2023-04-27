@@ -43,6 +43,14 @@
                 <div>
                     <input th:onkeyup="success()" type="password" placeholder="Enter Password" id="psw2" required>
                 </div>
+                <div>
+                    <label>
+                        <select th:field="*{bookkeeper_Id}">
+                            <option th:each="booker : ${bookkeepers}" th:value="${booker.id}" th:text="${booker.user.name}">
+                            </option>
+                        </select>
+                    </label>
+                </div>
                 <div th:each="role:${userRoles}" th:if="${role.id!=3}">
                     <input  th:id="|check${role.id}|" th:onclick="success()"  th:name="newRoles" th:value="${role.id}" type="checkbox" th:text="${role.name}"/>
                 </div>

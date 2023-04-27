@@ -2,8 +2,10 @@ package com.example.invoicemanager.Web;
 
 import com.example.invoicemanager.Model.Role;
 import com.example.invoicemanager.Model.User;
+import com.example.invoicemanager.Model.dto.UserDTO;
 import com.example.invoicemanager.Security.MyUserDetails;
 import com.example.invoicemanager.Security.MyUserDetailsService;
+import com.example.invoicemanager.Service.BookkeeperService;
 import com.example.invoicemanager.Service.RoleService;
 import com.example.invoicemanager.Service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +28,10 @@ public class AuthController {
 
     private final UserService userService;
     private final RoleService roleService;
+    private final BookkeeperService bookService;
 
     @PostMapping("/registration/new")
-    public String createUser(User user , @RequestParam("newRoles")List<String> roles){
+    public String createUser(UserDTO user , @RequestParam("newRoles")List<String> roles){
         List<User> users=userService.getUsers();
         users = users.stream().filter(userfromlist -> {
             return userfromlist.getUserName().equals(user.getUserName());
@@ -41,8 +44,9 @@ public class AuthController {
 
     @GetMapping("/registration")
     public String createUser(Model model){
-        model.addAttribute("newUser",new User());
+        model.addAttribute("newUser",new UserDTO());
         model.addAttribute("userRoles", roleService.getRoles());
+        model.addAttribute("bookkeepers", bookService.getBookkeepers());
         return "registration";
     }
 
