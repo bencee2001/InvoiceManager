@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <title>Home</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" th:src="@{/js/home.js}"></script>
 </head>
 <body>
 <div class="header">
@@ -44,23 +45,9 @@
         </tbody>
     </table>
     <script th:inline="javascript">
-
         $(document).ready(function(){
             setInterval(refreshNewCount, 1000);
         });
-
-        function refreshNewCount(){
-            $.ajax({
-                url: '/refreshCount',
-                type: 'GET',
-                data:{
-                    [[${_csrf.parameterName}]] : [[${_csrf.token}]]
-                },
-                success: function (data){
-                    document.getElementById('count').textContent=data;
-                }
-            })
-        }
     </script>
 </div>
 

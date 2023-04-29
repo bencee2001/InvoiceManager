@@ -5,7 +5,14 @@
     <meta charset="UTF-8">
     <title>Registration</title>
     <link th:href="@{/styles/logAndRegSite.css}" rel="stylesheet" />
+    <link th:href="@{/styles/select.css}" rel="stylesheet" />
     <script type="text/javascript" th:src="@{/js/registration.js}"></script>
+
+
+    <style>
+
+    </style>
+
 </head>
 <body>
 <div class="header">
@@ -44,12 +51,18 @@
                     <input th:onkeyup="success()" type="password" placeholder="Enter Password" id="psw2" required>
                 </div>
                 <div>
+                    <label><b>Choose Bookkeper</b></label>
+                </div>
+                <div >
                     <label>
-                        <select th:field="*{bookkeeper_Id}">
+                        <select class="select" th:field="*{bookkeeper_Id}">
                             <option th:each="booker : ${bookkeepers}" th:value="${booker.id}" th:text="${booker.user.name}">
                             </option>
                         </select>
                     </label>
+                </div>
+                <div>
+                    <label><b>Choose Role/Roles</b></label>
                 </div>
                 <div th:each="role:${userRoles}" th:if="${role.id!=3}">
                     <input  th:id="|check${role.id}|" th:onclick="success()"  th:name="newRoles" th:value="${role.id}" type="checkbox" th:text="${role.name}"/>
@@ -61,14 +74,15 @@
             </div>
         </div>
     </form>
+    <script th:inline="javascript">
+
+        var roles = [[${userRoles}]];
+        initRegistration(roles)
+
+    </script>
 </div>
 
-<script th:inline="javascript">
 
-     var roles = [[${userRoles}]];
-     initRegistration(roles)
-
-</script>
 
 </body>
 </html>

@@ -4,6 +4,7 @@ import com.example.invoicemanager.Model.Bookkeeper;
 import com.example.invoicemanager.Model.Invoice;
 import com.example.invoicemanager.Model.Role;
 import com.example.invoicemanager.Model.User;
+import com.example.invoicemanager.Model.dto.UserCreateDTO;
 import com.example.invoicemanager.Model.dto.UserDTO;
 import com.example.invoicemanager.Repository.BookkeeperRepository;
 import com.example.invoicemanager.Repository.RoleRepository;
@@ -60,18 +61,15 @@ public class UserService {
         return optUser.get();
     }
 
-    public void saveUser(UserDTO userDTO, List<String> roles){
+    public void saveUser(UserCreateDTO userDTO, List<String> roles){
         Set<Role> roleSet = new HashSet<>();
-        User user = userDTO.toUser(userRepository);
-
         roles.forEach(role->{
             roleSet.add(roleRepository.getReferenceById(Integer.valueOf(role)));
         });
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(roleSet);
-        user.setFailedLoginAttempts(0);
+        Bookkeeper bookkeeper = bookkeeperRepository.getReferenceById(userDTO.getBookkeeper_Id());
+        User user = userDTO.toUserFromDTO(passwordEncoder,bookkeeper,roleSet);
         userRepository.save(user);
-        Bookkeeper bookkeeper = user.getBookkeeper();
+
         Set<User> userSet = bookkeeper.getClients();
         userSet.add(user);
         bookkeeper.setClients(userSet);

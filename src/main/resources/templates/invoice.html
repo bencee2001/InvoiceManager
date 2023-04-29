@@ -7,8 +7,6 @@
     <link th:href="@{/styles/header.css}" rel="stylesheet" />
     <link th:href="@{/styles/input.css}" rel="stylesheet" />
 
-
-
 </head>
 <body>
 
@@ -40,7 +38,6 @@
 
         <input class="button" value="Save Changes" type="submit" sec:authorize="hasAnyAuthority('ADMIN', 'BOOK')">
     </form>
-
 
 </div>
 </body>

@@ -2,6 +2,7 @@ package com.example.invoicemanager.Web;
 
 import com.example.invoicemanager.Model.Role;
 import com.example.invoicemanager.Model.User;
+import com.example.invoicemanager.Model.dto.UserCreateDTO;
 import com.example.invoicemanager.Model.dto.UserDTO;
 import com.example.invoicemanager.Security.MyUserDetails;
 import com.example.invoicemanager.Security.MyUserDetailsService;
@@ -31,7 +32,7 @@ public class AuthController {
     private final BookkeeperService bookService;
 
     @PostMapping("/registration/new")
-    public String createUser(UserDTO user , @RequestParam("newRoles")List<String> roles){
+    public String createUser(UserCreateDTO user , @RequestParam("newRoles")List<String> roles){
         List<User> users=userService.getUsers();
         users = users.stream().filter(userfromlist -> {
             return userfromlist.getUserName().equals(user.getUserName());
@@ -44,7 +45,7 @@ public class AuthController {
 
     @GetMapping("/registration")
     public String createUser(Model model){
-        model.addAttribute("newUser",new UserDTO());
+        model.addAttribute("newUser",new UserCreateDTO());
         model.addAttribute("userRoles", roleService.getRoles());
         model.addAttribute("bookkeepers", bookService.getBookkeepers());
         return "registration";
@@ -55,8 +56,4 @@ public class AuthController {
         return "login";
     }
 
-    @GetMapping("/test")
-    public String test(){
-        return "testPage";
-    }
 }
