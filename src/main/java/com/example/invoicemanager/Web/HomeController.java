@@ -24,7 +24,7 @@ public class HomeController {
     @GetMapping("/home")
     public String toHome(Model model) {
         model.addAttribute("object", userService.getPrincipalUserDTO());
-        model.addAttribute("newInvoiceCount", userService.getNewCount());
+        model.addAttribute("newInvoiceCount", invoiceService.getNewInvoiceCountByUser(userService.getPrincipalUser()));
         return "home";
     }
 

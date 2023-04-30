@@ -1,8 +1,6 @@
 package com.example.invoicemanager.Model.dto;
 
 import com.example.invoicemanager.Model.Invoice;
-import com.example.invoicemanager.Model.User;
-import com.example.invoicemanager.Repository.BookkeeperRepository;
 import com.example.invoicemanager.Repository.UserRepository;
 import lombok.Builder;
 import lombok.Data;
@@ -41,9 +39,7 @@ public class InvoiceUpdateDTO {
                 .build();
     }
 
-    public static InvoiceUpdateDTO toInvocieDTO(Invoice invoice){
-        System.out.println(invoice.getIssueDate().toString());
-        System.out.println(invoice.getDueDate().toString());
+    /*public static InvoiceUpdateDTO toInvocieUpdateDTO(Invoice invoice){
         return InvoiceUpdateDTO.builder()
                 .id(invoice.getId())
                 .issueDate(invoice.getIssueDate().toString())
@@ -55,5 +51,5 @@ public class InvoiceUpdateDTO {
                 .buyerName(invoice.getUser().getName())
                 .isNew(invoice.getIsNew())
                 .build();
-    }
+    }*/
 }

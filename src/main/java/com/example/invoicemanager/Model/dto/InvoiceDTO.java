@@ -28,7 +28,7 @@ public class InvoiceDTO {
     private Boolean isNew;
 
     public static InvoiceDTO toInvoiceDTO(Invoice invoice){
-        InvoiceDTO invoiceDTO= InvoiceDTO.builder()
+        return InvoiceDTO.builder()
                 .id(invoice.getId())
                 .issueDate(invoice.getIssueDate())
                 .dueDate(invoice.getDueDate())
@@ -39,7 +39,6 @@ public class InvoiceDTO {
                 .buyerName(invoice.getUser().getName())
                 .isNew(invoice.getIsNew())
                 .build();
-        return invoiceDTO;
     }
 
     public static List<InvoiceDTO> toInvoiceDTOList(List<Invoice> invoices){

@@ -3,7 +3,6 @@ package com.example.invoicemanager.Model.dto;
 import com.example.invoicemanager.Model.Bookkeeper;
 import com.example.invoicemanager.Model.Role;
 import com.example.invoicemanager.Model.User;
-import com.example.invoicemanager.Repository.BookkeeperRepository;
 import lombok.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
 

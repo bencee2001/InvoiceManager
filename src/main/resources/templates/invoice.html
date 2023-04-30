@@ -20,9 +20,10 @@
     </div>
 </div>
 <div layout:fragment="content">
-    <form th:action = "@{/list/update}"  th:object="${invoice}" method="post">
+    <form th:action = "@{/invoice/update}"  th:object="${invoice}" method="post">
         <input th:field="*{id}" th:value="*{id}" hidden>
         <input th:field="*{userName}" th:value="*{userName}" hidden>
+        <input th:field="*{isNew}" th:value="true" hidden>
         <label>Buyer Name</label>:<br />
         <input th:value="*{buyerName}" type="text" readonly /><br />
         <label>Issue Date</label>:<br />
@@ -35,6 +36,7 @@
         <input th:field="*{itemName}" type="text" th:value="*{itemName}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
         <label>Price</label>:<br />
         <input th:field="*{price}" type="number" th:value="*{price}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
+
 
         <input class="button" value="Save Changes" type="submit" sec:authorize="hasAnyAuthority('ADMIN', 'BOOK')">
     </form>

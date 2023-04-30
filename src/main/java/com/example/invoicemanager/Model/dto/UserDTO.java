@@ -2,15 +2,12 @@ package com.example.invoicemanager.Model.dto;
 
 import com.example.invoicemanager.Model.Role;
 import com.example.invoicemanager.Model.User;
-import com.example.invoicemanager.Repository.BookkeeperRepository;
-import com.example.invoicemanager.Repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
 @Data
 @AllArgsConstructor
@@ -41,7 +38,18 @@ public class UserDTO {
                 .build();
     }
 
-    public User toUser(UserRepository userRepository){
-        return userRepository.getReferenceById(this.userName);
+    public static Set<UserDTO> toUserDTOSet(Set<User> users){
+        Set<UserDTO> usersDTO = new HashSet<>();
+        users.forEach(client -> {
+            usersDTO.add(UserDTO.toUserDTO(client));
+        });
+        return usersDTO;
+    }
+
+    public static Collection<UserDTO> toUserDTOCollection(Collection<User> users, Collection<UserDTO> userDTOS){
+        users.forEach(client -> {
+            userDTOS.add(UserDTO.toUserDTO(client));
+        });
+        return userDTOS;
     }
 }

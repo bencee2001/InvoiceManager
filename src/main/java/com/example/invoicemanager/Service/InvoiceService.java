@@ -2,7 +2,9 @@ package com.example.invoicemanager.Service;
 
 import com.example.invoicemanager.Model.Invoice;
 import com.example.invoicemanager.Model.User;
+import com.example.invoicemanager.Model.dto.InvoiceDTO;
 import com.example.invoicemanager.Repository.InvoiceRepository;
+import com.example.invoicemanager.libs.Error.NoSuchInvoiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -15,24 +17,20 @@ public class InvoiceService {
 
     private final InvoiceRepository invoiceRepository;
 
-    public List<Invoice> getInvoices(){
-        return invoiceRepository.findAll();
-    }
-
     public void save(Invoice invoice){
         invoiceRepository.save(invoice);
     }
 
-    public void deleteInvoice(Integer id){
-        Optional<Invoice> invoice = invoiceRepository.findById(id);
-        if(invoice.isPresent()) {
-            invoiceRepository.deleteById(id);
-        }
+    public void deleteInvoice(Integer id) throws NoSuchInvoiceException {
+        invoiceRepository.delete(getInvoiceById(id));
     }
 
-    public Invoice getInvoiceById(int id) {
+    public Invoice getInvoiceById(int id) throws NoSuchInvoiceException {
         Optional<Invoice> invoice = invoiceRepository.findById(id);
-        return invoice.orElse(null);
+        if(invoice.isEmpty()) {
+            throw new NoSuchInvoiceException("Id not found: "+id);
+        }
+        return invoice.get();
     }
 
     public List<Invoice> getInvoicesByUser(User user) {
@@ -47,5 +45,13 @@ public class InvoiceService {
                 newCnt++;
         }
         return newCnt;
+    }
+
+    public void openInvoice(Integer id, User user) throws NoSuchInvoiceException {
+        Invoice invoice = getInvoiceById(id);
+        if(user.getUserName().equals(invoice.getUser().getUserName())) {
+            invoice.setIsNew(false);
+            save(invoice);
+        }
     }
 }

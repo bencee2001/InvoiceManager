@@ -9,6 +9,7 @@ import com.example.invoicemanager.Security.MyUserDetailsService;
 import com.example.invoicemanager.Service.BookkeeperService;
 import com.example.invoicemanager.Service.RoleService;
 import com.example.invoicemanager.Service.UserService;
+import com.example.invoicemanager.libs.Error.UserAlreadyExistsException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,13 +33,7 @@ public class AuthController {
     private final BookkeeperService bookService;
 
     @PostMapping("/registration/new")
-    public String createUser(UserCreateDTO user , @RequestParam("newRoles")List<String> roles){
-        List<User> users=userService.getUsers();
-        users = users.stream().filter(userfromlist -> {
-            return userfromlist.getUserName().equals(user.getUserName());
-        }).toList();
-        if(users.size()!=0)
-            throw new RuntimeException("User already exist.");
+    public String createUser(UserCreateDTO user , @RequestParam("newRoles")List<String> roles) throws UserAlreadyExistsException {
         userService.saveUser(user, roles);
         return "redirect:/login";
     }

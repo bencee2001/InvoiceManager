@@ -51,7 +51,7 @@
                     <td  th:text="${invoice.price}"></td>
 
                 <td>
-                    <form th:action="@{|/list/delete/${invoice.id}|}" method="get">
+                    <form th:action="@{|/invoice/delete/${invoice.id}|}" method="get">
                         <button type="submit" class="button">
                             X
                         </button>
@@ -85,7 +85,7 @@
                 <td  th:text="${invoice.comment}"></td>
                 <td  th:text="${invoice.price}"></td>
                 <td>
-                    <form th:action="@{|/list/delete/${invoice.id}|}" method="get">
+                    <form th:action="@{|/invoice/delete/${invoice.id}|}" method="get">
                         <button type="submit" class="button">
                             X
                         </button>

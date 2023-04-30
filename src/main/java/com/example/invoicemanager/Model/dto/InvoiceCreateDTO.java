@@ -1,8 +1,6 @@
 package com.example.invoicemanager.Model.dto;
 
 import com.example.invoicemanager.Model.Invoice;
-import com.example.invoicemanager.Model.User;
-import com.example.invoicemanager.Repository.BookkeeperRepository;
 import com.example.invoicemanager.Repository.UserRepository;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -24,9 +22,6 @@ public class InvoiceCreateDTO {
     private String comment;
     private BigDecimal price;
     private Boolean isNew;
-
-
-
 
     public Invoice toInvoice(UserRepository userRepository) throws ParseException {
 
