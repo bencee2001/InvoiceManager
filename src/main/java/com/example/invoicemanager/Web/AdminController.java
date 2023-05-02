@@ -28,13 +28,13 @@ public class AdminController {
 
     @PostMapping("/save/{username}")
     public String saveNewRoles(@RequestParam("newRoles") List<String> roleIds,
-                               @PathVariable String username) throws NoSelectedRoleException, NoSuchUserExpection, NoSuchBookkeeperExcpetion {
+                               @PathVariable String username) throws NoSelectedRoleException, NoSuchUserException, NoSuchBookkeeperException {
         userService.saveNewRoles(roleIds,userService.getUserByUsername(username));
         return "redirect:/admin";
     }
 
     @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") String username) throws NoSuchUserExpection, BookkeeperHasClientsExpection, LogedInUserDeleteException {
+    public String deleteUser(@PathVariable("id") String username) throws NoSuchUserException, BookkeeperHasClientsException, LogedInUserDeleteException {
         userService.deleteByUsername(userService.getUserByUsername(username));
         return "redirect:/admin";
     }

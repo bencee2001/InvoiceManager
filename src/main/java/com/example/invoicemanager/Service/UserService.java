@@ -1,7 +1,6 @@
 package com.example.invoicemanager.Service;
 
 import com.example.invoicemanager.Model.Bookkeeper;
-import com.example.invoicemanager.Model.Invoice;
 import com.example.invoicemanager.Model.Role;
 import com.example.invoicemanager.Model.User;
 import com.example.invoicemanager.Model.dto.UserCreateDTO;
@@ -36,22 +35,43 @@ public class UserService {
     private final int BOOKKEEPER_ROLE_POS = 1;
 
 
+    /**
+     * Get all User in the database
+     * @return list of users
+     */
     public List<User> getUsers(){
         return userRepository.findAll();
     }
 
+    /**
+     * Get all Users in the database in UserDTO object
+     * @return list of userDTO objects
+     */
     public List<UserDTO> getUserDTOs(){
         List<User> userList = getUsers();
         return (List<UserDTO>) UserDTO.toUserDTOCollection(userList,new ArrayList<>());
     }
 
-    public User getUserByUsername(String username) throws NoSuchUserExpection {
+    /**
+     * Get the User object by it's UserName(Id)
+     * @param username the UserName
+     * @return the User
+     * @throws NoSuchUserException if there is no User by the UserName
+     */
+    public User getUserByUsername(String username) throws NoSuchUserException {
         Optional<User> optUser = userRepository.findById(username);
         if(optUser.isEmpty())
-            throw new NoSuchUserExpection("No user on the username of "+username);
+            throw new NoSuchUserException("No user on the username of "+username);
         return optUser.get();
     }
 
+    /**
+     * From the DTO and the roles it's crate the User object and save it to the database
+     * it's ensured the bookkeeper objects are updated and saved too.
+     * @param userDTO required User values
+     * @param roles the rights of the new user
+     * @throws UserAlreadyExistsException if the user is already exists
+     */
     public void saveUser(UserCreateDTO userDTO, List<String> roles) throws UserAlreadyExistsException {
         if(checkIfUserExistsByUsername(userDTO.getUserName()))
             throw new UserAlreadyExistsException("User already exist.");
@@ -61,25 +81,46 @@ public class UserService {
         saveBookkeeper(roles, bookkeeper, user);
     }
 
+    /**
+     * Get the authenticated User object in UserDTO
+     * @return The User in UserDTO
+     */
     public UserDTO getPrincipalUserDTO(){
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         User user = userRepository.getReferenceById(principal.getUsername());
         return UserDTO.toUserDTO(user);
     }
 
+    /**
+     * Get the authenticated User object
+     * @return The User
+     */
     public User getPrincipalUser(){
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return userRepository.getReferenceById(principal.getUsername());
     }
 
-    public void deleteByUsername(User user) throws LogedInUserDeleteException, BookkeeperHasClientsExpection {
+    /**
+     * Delete the User from the database.
+     * @param user The User
+     * @throws LogedInUserDeleteException if try to delete authenticated User (checked by {}
+     * @throws BookkeeperHasClientsException if the User is a Bookkeeper and has clients, it can't be deleted
+     */
+    public void deleteByUsername(User user) throws LogedInUserDeleteException, BookkeeperHasClientsException {
         if(bookService.checkIfHaveClients(user))
-            throw new BookkeeperHasClientsExpection("Bookkeeper "+ user.getUserName()+" has clients.");
-        checkIfUserLogedInUser(user.getUserName());
+            throw new BookkeeperHasClientsException("Bookkeeper "+ user.getUserName()+" has clients.");
+        checkIfUserLoggedInUser(user.getUserName());
         deleteUser(user);
     }
 
-    public void saveNewRoles(List<String> newRoleIds,User user) throws NoSelectedRoleException, NoSuchBookkeeperExcpetion {
+    /**
+     * Set the new Roles for the User
+     * @param newRoleIds list of strings with the Roles Ids
+     * @param user The User
+     * @throws NoSelectedRoleException if the newRoleIds is empty
+     * @throws NoSuchBookkeeperException if User not a Bookkeeper
+     */
+    public void saveNewRoles(List<String> newRoleIds,User user) throws NoSelectedRoleException, NoSuchBookkeeperException {
         if(newRoleIds.size()==0){
             throw new NoSelectedRoleException("At least one role needed.");
         }
@@ -98,6 +139,12 @@ public class UserService {
         userRepository.save(user);
     }
 
+    /**
+     * Convert the list of string to set of Roles
+     * @param newRoleIds list of strings with the Roles Ids
+     * @param roleList every role
+     * @return set of roles
+     */
     private static Set<Role> getNewRolesForUser(List<String> newRoleIds, List<Role> roleList) {
         Set<Role> newRolesForUser = new HashSet<>();
         roleList.stream().filter(role -> newRoleIds.contains(String.valueOf(role.getId())))
@@ -105,6 +152,12 @@ public class UserService {
         return newRolesForUser;
     }
 
+    /**
+     * delete User from bookkeeper if the book role taken away
+     * @param newRoleIds list of strings with the Roles Ids
+     * @param user The User
+     * @param roleList list of new Roles
+     */
     private void setBookkeeperRole(List<String> newRoleIds, User user, List<Role> roleList) {
         if(user.getRoles().contains(roleList.get(BOOKKEEPER_ROLE_POS)) &&
                 !(newRoleIds.contains(BOOKKEEPER_ROLE_ID_STR))){
@@ -116,6 +169,10 @@ public class UserService {
         }
     }
 
+    /**
+     * check if User have bookkeeper and then delete it
+     * @param user The User
+     */
     private void deleteUser(User user) {
         if(user.getBookkeeper()==null) {
             userRepository.delete(user);
@@ -124,6 +181,10 @@ public class UserService {
         }
     }
 
+    /**
+     * delete User from it's bookkeeper clients list
+     * @param user the User
+     */
     private void cleanUser(User user) {
         Bookkeeper bookkeeper = user.getBookkeeper();
         Set<User> userSet = bookkeeper.getClients();
@@ -134,6 +195,13 @@ public class UserService {
         userRepository.delete(user);
     }
 
+    /**
+     * Set the User as the Bookkeeper client.
+     * If the User has "book" role then they will also be saved as a bookkeeper.
+     * @param roles User's roles
+     * @param bookkeeper The Bookkeeper
+     * @param user The User
+     */
     private void saveBookkeeper(List<String> roles, Bookkeeper bookkeeper, User user) {
         Set<User> userSet = bookkeeper.getClients();
         userSet.add(user);
@@ -143,13 +211,19 @@ public class UserService {
             bookkeeperRepository.save(new Bookkeeper(user));
     }
 
-    private static void checkIfUserLogedInUser(String username) throws LogedInUserDeleteException {
+    private static void checkIfUserLoggedInUser(String username) throws LogedInUserDeleteException {
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if(principal.getUsername().equals(username)){
             throw new LogedInUserDeleteException("Don't delete yourself.");
         }
     }
 
+    /**
+     * update the User roles in the SecurityContext
+     * @param roleList every role
+     * @param newRoleIds list of strings with the Roles Ids
+     * @param username the User username
+     */
     private void setSecurityContext(List<Role> roleList,List<String> newRoleIds,String username){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails= (UserDetails) auth.getPrincipal();

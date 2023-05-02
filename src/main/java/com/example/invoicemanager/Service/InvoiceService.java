@@ -2,7 +2,6 @@ package com.example.invoicemanager.Service;
 
 import com.example.invoicemanager.Model.Invoice;
 import com.example.invoicemanager.Model.User;
-import com.example.invoicemanager.Model.dto.InvoiceDTO;
 import com.example.invoicemanager.Repository.InvoiceRepository;
 import com.example.invoicemanager.libs.Error.NoSuchInvoiceException;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +16,29 @@ public class InvoiceService {
 
     private final InvoiceRepository invoiceRepository;
 
+    /**
+     * Save the Invoice to the database
+     * @param invoice the invoice
+     */
     public void save(Invoice invoice){
         invoiceRepository.save(invoice);
     }
 
+    /**
+     * Delete the Invoice by Id
+     * @param id the id of the invoice
+     * @throws NoSuchInvoiceException if the id is not identify an invoice
+     */
     public void deleteInvoice(Integer id) throws NoSuchInvoiceException {
         invoiceRepository.delete(getInvoiceById(id));
     }
 
+    /**
+     * Get the Invoice by Id
+     * @param id the id of the invoice
+     * @return the invoice that get identified by the id
+     * @throws NoSuchInvoiceException if the id is not identify an invoice
+     */
     public Invoice getInvoiceById(int id) throws NoSuchInvoiceException {
         Optional<Invoice> invoice = invoiceRepository.findById(id);
         if(invoice.isEmpty()) {
@@ -33,10 +47,20 @@ public class InvoiceService {
         return invoice.get();
     }
 
+    /**
+     * Get the User's invoices
+     * @param user the User
+     * @return list of invoices
+     */
     public List<Invoice> getInvoicesByUser(User user) {
         return invoiceRepository.findAllByUser(user);
     }
 
+    /**
+     * Count the Invoices of a User, that are not yet seen(invoice.isNew=true) by the User
+     * @param user the User
+     * @return the number of invoices, that the User not yet seen
+     */
     public int getNewInvoiceCountByUser(User user) {
         List<Invoice> invoices = getInvoicesByUser(user);
         int newCnt=0;
@@ -47,6 +71,12 @@ public class InvoiceService {
         return newCnt;
     }
 
+    /**
+     * With this method if the User open the Invoice it's status will change to be open
+     * @param id the Invoice Id
+     * @param user the User who wnat to open the Invoice
+     * @throws NoSuchInvoiceException if the id is not identify an invoice
+     */
     public void openInvoice(Integer id, User user) throws NoSuchInvoiceException {
         Invoice invoice = getInvoiceById(id);
         if(user.getUserName().equals(invoice.getUser().getUserName())) {
