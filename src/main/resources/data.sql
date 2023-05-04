@@ -32,11 +32,11 @@ VALUES ('user', 'Us Ser', 200,'$2a$12$z4hjLUToDJu8KItL0q/bdONG2NuC9UPFQ8/J6gBI./
 INSERT INTO users_roles (username, role_id)
 VALUES ('user', 1);
 
-INSERT INTO bookkeeper_clients(bookkeeper_id, clients_user_name)
+/*INSERT INTO bookkeeper_clients(bookkeeper_id, clients_user_name)
 VALUES
     (200, 'admin'),
     (200, 'user');
-
+*/
 INSERT INTO invoices (id,is_new,user_name,due_date,issue_date,item_name,price)
 VALUES
     (1,true,'user','2023-6-28','2023-1-1','Chili', 2000),

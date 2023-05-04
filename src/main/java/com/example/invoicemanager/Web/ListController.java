@@ -1,8 +1,8 @@
 package com.example.invoicemanager.Web;
 
 import com.example.invoicemanager.Model.User;
-import com.example.invoicemanager.Model.dto.InvoiceCreateDTO;
-import com.example.invoicemanager.Model.dto.InvoiceDTO;
+import com.example.invoicemanager.DTO.InvoiceCreateDTO;
+import com.example.invoicemanager.DTO.InvoiceDTO;
 import com.example.invoicemanager.Service.BookkeeperService;
 import com.example.invoicemanager.Service.InvoiceService;
 import com.example.invoicemanager.Service.UserService;

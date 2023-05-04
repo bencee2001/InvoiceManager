@@ -21,6 +21,6 @@ public class Bookkeeper {
     @NonNull
     private User user;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "bookkeeper")
     private Set<User> clients;
 }

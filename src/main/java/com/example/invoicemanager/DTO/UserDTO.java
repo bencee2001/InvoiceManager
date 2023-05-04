@@ -1,4 +1,4 @@
-package com.example.invoicemanager.Model.dto;
+package com.example.invoicemanager.DTO;
 
 import com.example.invoicemanager.Model.Role;
 import com.example.invoicemanager.Model.User;

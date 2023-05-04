@@ -27,6 +27,7 @@ public class User {
     private String password;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "bookkeeper_id")
     private Bookkeeper bookkeeper;
 
     private Date lastLogin;

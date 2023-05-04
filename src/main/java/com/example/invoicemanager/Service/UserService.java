@@ -3,8 +3,8 @@ package com.example.invoicemanager.Service;
 import com.example.invoicemanager.Model.Bookkeeper;
 import com.example.invoicemanager.Model.Role;
 import com.example.invoicemanager.Model.User;
-import com.example.invoicemanager.Model.dto.UserCreateDTO;
-import com.example.invoicemanager.Model.dto.UserDTO;
+import com.example.invoicemanager.DTO.UserCreateDTO;
+import com.example.invoicemanager.DTO.UserDTO;
 import com.example.invoicemanager.Repository.BookkeeperRepository;
 import com.example.invoicemanager.Repository.UserRepository;
 import com.example.invoicemanager.libs.Error.*;
@@ -36,7 +36,7 @@ public class UserService {
 
 
     /**
-     * Get all User in the database
+     * Get all User from the database
      * @return list of users
      */
     public List<User> getUsers(){
@@ -44,7 +44,7 @@ public class UserService {
     }
 
     /**
-     * Get all Users in the database in UserDTO object
+     * Get all Users from the database in UserDTO object
      * @return list of userDTO objects
      */
     public List<UserDTO> getUserDTOs(){
@@ -53,7 +53,7 @@ public class UserService {
     }
 
     /**
-     * Get the User object by it's UserName(Id)
+     * Get the User object by its UserName(Id)
      * @param username the UserName
      * @return the User
      * @throws NoSuchUserException if there is no User by the UserName
@@ -66,7 +66,7 @@ public class UserService {
     }
 
     /**
-     * From the DTO and the roles it's crate the User object and save it to the database
+     * From the DTO and the roles it's create the User object and save it to the database
      * it's ensured the bookkeeper objects are updated and saved too.
      * @param userDTO required User values
      * @param roles the rights of the new user
@@ -182,31 +182,22 @@ public class UserService {
     }
 
     /**
-     * delete User from it's bookkeeper clients list
+     * delete User's Bookkeeper agenda and the User it's self
      * @param user the User
      */
     private void cleanUser(User user) {
-        Bookkeeper bookkeeper = user.getBookkeeper();
-        Set<User> userSet = bookkeeper.getClients();
-        userSet.remove(user);
-        bookkeeper.setClients(userSet);
-        bookkeeperRepository.save(bookkeeper);
-        user.setBookkeeper(null);
+        Optional<Bookkeeper> bookkeeper = bookkeeperRepository.findByUser(user);
+        bookkeeper.ifPresent(bookkeeperRepository::delete);
         userRepository.delete(user);
     }
 
     /**
-     * Set the User as the Bookkeeper client.
      * If the User has "book" role then they will also be saved as a bookkeeper.
      * @param roles User's roles
      * @param bookkeeper The Bookkeeper
      * @param user The User
      */
     private void saveBookkeeper(List<String> roles, Bookkeeper bookkeeper, User user) {
-        Set<User> userSet = bookkeeper.getClients();
-        userSet.add(user);
-        bookkeeper.setClients(userSet);
-        bookkeeperRepository.save(bookkeeper);
         if(roles.contains(BOOKKEEPER_ROLE_ID_STR))
             bookkeeperRepository.save(new Bookkeeper(user));
     }

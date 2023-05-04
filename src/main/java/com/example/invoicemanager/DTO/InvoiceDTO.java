@@ -1,4 +1,4 @@
-package com.example.invoicemanager.Model.dto;
+package com.example.invoicemanager.DTO;
 
 /*
 thymeleaf nem tudja kiirni Stringből a date-et,

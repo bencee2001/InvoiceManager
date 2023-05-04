@@ -1,10 +1,9 @@
-package com.example.invoicemanager.Model.dto;
+package com.example.invoicemanager.DTO;
 
 import com.example.invoicemanager.Model.Invoice;
 import com.example.invoicemanager.Repository.UserRepository;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -12,10 +11,11 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class InvoiceCreateDTO {
+@Builder
+public class InvoiceUpdateDTO {
+    private Integer id;
     private String userName;
+    private String buyerName;
     private String issueDate;
     private String dueDate;
     private String itemName;
@@ -28,6 +28,7 @@ public class InvoiceCreateDTO {
         Date iDate = new SimpleDateFormat("yyyy-MM-dd").parse(issueDate);
         Date dDate = new SimpleDateFormat("yyyy-MM-dd").parse(dueDate);
         return Invoice.builder()
+                .id(id)
                 .user(userRepository.getReferenceById(userName))
                 .issueDate(iDate)
                 .dueDate(dDate)
@@ -37,4 +38,18 @@ public class InvoiceCreateDTO {
                 .isNew(true)
                 .build();
     }
+
+    /*public static InvoiceUpdateDTO toInvocieUpdateDTO(Invoice invoice){
+        return InvoiceUpdateDTO.builder()
+                .id(invoice.getId())
+                .issueDate(invoice.getIssueDate().toString())
+                .dueDate(invoice.getDueDate().toString())
+                .comment(invoice.getComment())
+                .itemName(invoice.getItemName())
+                .price(invoice.getPrice())
+                .userName(invoice.getUser().getUserName())
+                .buyerName(invoice.getUser().getName())
+                .isNew(invoice.getIsNew())
+                .build();
+    }*/
 }
