@@ -17,7 +17,7 @@ public interface BookkeeperRepository extends JpaRepository<Bookkeeper, Long> {
             "from Bookkeeper bc " +
                     "where bc.user=:username"
     )
-    public Set<User> findClientsByUser(@Param("username") User user);
+    Set<User> findClientsByUser(@Param("username") User user);
 
-    public Optional<Bookkeeper> findByUser(User user);
+    Optional<Bookkeeper> findByUser(User user);
 }
