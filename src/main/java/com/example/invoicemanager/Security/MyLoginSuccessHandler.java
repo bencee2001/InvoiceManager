@@ -16,6 +16,7 @@ import java.util.Date;
 @Component
 @RequiredArgsConstructor
 public class MyLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
+
     private final UserRepository userRepository;
 
     @Override

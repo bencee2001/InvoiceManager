@@ -15,7 +15,6 @@ public class PayController {
 
     @GetMapping("/select/{invoiceId}")
     public void selectInvoiceToPay(@PathVariable int invoiceId, @RequestParam("type") PaymentType type) throws NoSuchInvoiceException {
-        System.out.println("Hello Bello "+ invoiceId +" "+type);
         payService.savePayment(invoiceId,type);
     }
 }

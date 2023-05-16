@@ -72,13 +72,10 @@
             </label>
         </div>
         <div>
-            <input class="button" value="Save Changes" type="submit" sec:authorize="hasAnyAuthority('ADMIN', 'BOOK')">
+            <input class="button" value="Save Changes" type="submit" sec:authorize="hasAnyAuthority('ADMIN', 'BOOK')"
+                   th:disabled="${invoice.payment!=null}">
         </div>
     </form>
-    <script th:inline="javascript">
-
-
-    </script>
 </div>
 </body>
 </html>

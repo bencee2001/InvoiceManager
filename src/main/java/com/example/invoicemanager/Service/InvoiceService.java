@@ -86,10 +86,15 @@ public class InvoiceService {
         }
     }
 
+    /**
+     * Updates the invoice
+     * @param invoice Invoice to Update
+     * @throws CantBeChangedException if invoice is paid throw exception
+     */
     public void update(Invoice invoice) throws CantBeChangedException {
-        if(invoice.getPayment()==null){
-            invoiceRepository.save(invoice);
+        if(invoice.getPayment()!=null){
+            throw new CantBeChangedException("If the invacie payed, it can't be changed.");
         }
-        throw new CantBeChangedException("If the invacie payed, it can't be changed.");
+        invoiceRepository.save(invoice);
     }
 }

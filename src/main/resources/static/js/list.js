@@ -102,6 +102,7 @@ function createRow(invoice,prefixName){
     tr.appendChild(td6);
 
     const td7 = document.createElement("td");
+    td7.align="center"
     if(invoice.payment===null){
         const button = document.createElement("button");
         button.className="button"
@@ -118,7 +119,7 @@ function createRow(invoice,prefixName){
     const td8 = document.createElement("td");
     const form = document.createElement("form");
     form.method="get"
-    form.action="/list/delete/"+invoice.id;
+    form.action="/invoice/delete/"+invoice.id;
     const button = document.createElement("button");
     button.type="submit"
     button.className="button"

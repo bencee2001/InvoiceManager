@@ -14,7 +14,7 @@ public class MyErrorController implements ErrorController {
     @RequestMapping("/error")
     public String handleError(HttpServletRequest httpRequest, Model model) {
         Exception e = (Exception) httpRequest.getAttribute(RequestDispatcher.ERROR_EXCEPTION);
-        model.addAttribute("error", e.getMessage());
+        model.addAttribute("error",e!=null ? e.getMessage():"Error unknown.");
         return "error";
     }
 
