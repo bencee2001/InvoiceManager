@@ -3,6 +3,7 @@ package com.example.invoicemanager.Service;
 import com.example.invoicemanager.Model.Invoice;
 import com.example.invoicemanager.Model.User;
 import com.example.invoicemanager.Repository.InvoiceRepository;
+import com.example.invoicemanager.libs.Error.CantBeChangedException;
 import com.example.invoicemanager.libs.Error.NoSuchInvoiceException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -83,5 +84,12 @@ public class InvoiceService {
             invoice.setIsNew(false);
             save(invoice);
         }
+    }
+
+    public void update(Invoice invoice) throws CantBeChangedException {
+        if(invoice.getPayment()==null){
+            invoiceRepository.save(invoice);
+        }
+        throw new CantBeChangedException("If the invacie payed, it can't be changed.");
     }
 }

@@ -2,6 +2,8 @@ TRUNCATE TABLE users_roles CASCADE;
 TRUNCATE TABLE invoices CASCADE;
 TRUNCATE TABLE users CASCADE;
 TRUNCATE TABLE role CASCADE;
+TRUNCATE TABLE payment CASCADE;
+
 
 INSERT INTO role (id, name)
 VALUES
@@ -37,8 +39,8 @@ VALUES
     (200, 'admin'),
     (200, 'user');
 */
-INSERT INTO invoices (id,is_new,user_name,due_date,issue_date,item_name,price)
+INSERT INTO invoices (id,is_new,user_name,due_date,issue_date,item_name,item_number,price)
 VALUES
-    (1,true,'user','2023-6-28','2023-1-1','Chili', 2000),
-    (2,true,'user','2023-3-14','2023-2-2','Surgery', 100000),
-    (3,true,'book','2023-3-1','2023-2-17','Hat', 1000);
+    (1,true,'user','2023-6-28','2023-1-1','Chili',2, 2000),
+    (2,true,'user','2023-3-14','2023-2-2','Surgery',3, 100000),
+    (3,true,'book','2023-3-1','2023-2-17','Hat',4, 1000);

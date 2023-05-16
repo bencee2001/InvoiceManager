@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout/basePage.html}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link th:href="@{/styles/header.css}" rel="stylesheet" />
-    <link th:href="@{/styles/input.css}" rel="stylesheet" />
+    <link th:href="@{/styles/header.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/input.css}" rel="stylesheet"/>
 
 </head>
 <body>
@@ -20,27 +22,63 @@
     </div>
 </div>
 <div layout:fragment="content">
-    <form th:action = "@{/invoice/update}"  th:object="${invoice}" method="post">
-        <input th:field="*{id}" th:value="*{id}" hidden>
-        <input th:field="*{userName}" th:value="*{userName}" hidden>
-        <input th:field="*{isNew}" th:value="true" hidden>
-        <label>Buyer Name</label>:<br />
-        <input th:value="*{buyerName}" type="text" readonly /><br />
-        <label>Issue Date</label>:<br />
-        <input id="issueDate" name="issueDate" type="date" th:value="*{#dates.format(issueDate,'yyyy-MM-dd')}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
-        <label>DueDate</label>:<br />
-        <input id="dueDate" name="dueDate" type="date" th:value="*{#dates.format(dueDate,'yyyy-MM-dd')}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
-        <label>Comment</label>:<br />
-        <input th:field="*{comment}" type="text" th:value="*{comment}"  th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
-        <label>Item Name</label>:<br />
-        <input th:field="*{itemName}" type="text" th:value="*{itemName}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
-        <label>Price</label>:<br />
-        <input th:field="*{price}" type="number" th:value="*{price}" th:readonly="${!#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')')}"/><br />
+    <form th:action="@{/invoice/update}" th:object="${updateInvoice}" method="post">
+        <input name="id" th:value="${invoice.id}" hidden>
+        <input name="userName" th:value="${invoice.userName}" hidden>
+        <input name="isNew" th:value="true" hidden>
+        <label for="buyerName">Buyer Name</label>:<br/>
+        <input id="buyerName" name="buyerName" th:value="${invoice.buyerName}" type="text" readonly/><br/>
+        <div class="in-row">
+            <label for="issueDate">Issue Date:<br/>
+                <input id="issueDate" name="issueDate" type="date"
+                       th:value="${#dates.format(invoice.issueDate,'yyyy-MM-dd')}"
+                       th:readonly="${!((#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')'))&&(invoice.payment==null))}"/>
 
+            </label>
+            <label for="dueDate">DueDate:<br/>
+                <input id="dueDate" name="dueDate" type="date" th:value="${#dates.format(invoice.dueDate,'yyyy-MM-dd')}"
+                       th:readonly="${!((#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')'))&&(invoice.payment==null))}"/>
+            </label>
+        </div>
+        <label for="comment">Comment</label>:<br/>
+        <input id="comment" name="commet" th:field="${invoice.comment}" type="text" th:value="*{comment}"
+               th:readonly="${!((#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')'))&&(invoice.payment==null))}"/><br/>
+        <label for="itemName">Item Name</label>:<br/>
+        <input id="itemName" name="itemName" type="text" th:value="${invoice.itemName}"
+               th:readonly="${!((#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')'))&&(invoice.payment==null))}"/><br/>
+        <div class="in-row">
+            <label for="price">Price:<br/>
+                <input id="price" name="price" type="number" th:value="${invoice.price}"
+                       th:readonly="${!((#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')'))&&(invoice.payment==null))}"/>
+            </label>
+            <label for="itemNumber">Number of Items:<br/>
+                <input id="itemNumber" name="itemNumber" type="number" th:value="${invoice.itemNumber}"
+                       th:readonly="${!((#authorization.expression('hasAnyAuthority(''ADMIN'', ''BOOK'')'))&&(invoice.payment==null))}"/>
+            </label>
+        </div>
 
-        <input class="button" value="Save Changes" type="submit" sec:authorize="hasAnyAuthority('ADMIN', 'BOOK')">
+        <input name="payment" th:value="${invoice.payment==null ? null: invoice.payment.id}" hidden>
+        <div th:hidden="*{payment==null}" th:class="${invoice.payment==null ? null : 'in-row line'}">
+            <label>Payment Method:<br/>
+                <input type="text" th:value="${invoice.payment==null ? null: invoice.payment.type}" readonly/>
+            </label>
+            <label>Cost:<br/>
+                <input type="number" th:value="${invoice.payment==null ? null: invoice.payment.cost}" readonly/>
+            </label>
+            <label>PayDay:<br/>
+                <input type="date"
+                       th:value="${invoice.payment==null ? null: #dates.format(invoice.payment.paydey,'yyyy-MM-dd')}"
+                       readonly/>
+            </label>
+        </div>
+        <div>
+            <input class="button" value="Save Changes" type="submit" sec:authorize="hasAnyAuthority('ADMIN', 'BOOK')">
+        </div>
     </form>
+    <script th:inline="javascript">
 
+
+    </script>
 </div>
 </body>
 </html>

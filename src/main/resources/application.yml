@@ -32,4 +32,3 @@ server:
     whitelabel:
       enabled: false
     path: /error
-

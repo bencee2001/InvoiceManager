@@ -8,7 +8,7 @@ function ajaxInit(newClients, csrfName, csrfToken) {
     csrf_token = csrfToken
 }
 function viewInvoice(val) {
-    window.location.href = '/list/select/'+val
+    window.location.href = '/invoice/select/'+val
 
 }
 function switchInvoices(){
@@ -62,17 +62,17 @@ function clientAjax(){
 
 function createRow(invoice,prefixName){
     const tr = document.createElement("tr");
-    console.log(invoice)
     tr.className = prefixName+"Rows";
-    tr.setAttribute("onclick","viewInvoice("+invoice.id+")")
     const div = document.createElement("div");
 
     const td1 = document.createElement("td");
     td1.textContent = invoice.isNew ? "New" : "Opened";
+    td1.setAttribute("onclick","viewInvoice("+invoice.id+")")
     tr.appendChild(td1)
 
     const td2 = document.createElement("td");
     td2.textContent = invoice.buyerName;
+    td2.setAttribute("onclick","viewInvoice("+invoice.id+")")
     tr.appendChild(td2)
 
     const td3 = document.createElement("td");
@@ -80,25 +80,42 @@ function createRow(invoice,prefixName){
     const iTimezoneOffset = iDate.getTimezoneOffset();
     const iAdjustedDate = new Date(iDate.getTime()-iTimezoneOffset*60*1000).toISOString()
     td3.textContent = iAdjustedDate.split('T')[0];
+    td3.setAttribute("onclick","viewInvoice("+invoice.id+")")
     tr.appendChild(td3);
 
     const td4 = document.createElement("td");
-    console.log(invoice.dueDate);
     const dDate = new Date(invoice.dueDate.toString())
     const dTimezoneOffset = dDate.getTimezoneOffset();
     const dAdjustedDate = new Date(dDate.getTime()-dTimezoneOffset*60*1000).toISOString()
     td4.textContent = dAdjustedDate.split('T')[0];
+    td4.setAttribute("onclick","viewInvoice("+invoice.id+")")
     tr.appendChild(td4);
 
     const td5 = document.createElement("td");
     td5.textContent = invoice.comment;
+    td5.setAttribute("onclick","viewInvoice("+invoice.id+")")
     tr.appendChild(td5);
 
     const td6 = document.createElement("td");
-    td6.textContent = invoice.price.toFixed(2);
+    td6.textContent = (invoice.price * invoice.itemNumber).toFixed(2);
+    td6.setAttribute("onclick","viewInvoice("+invoice.id+")")
     tr.appendChild(td6);
 
     const td7 = document.createElement("td");
+    if(invoice.payment===null){
+        const button = document.createElement("button");
+        button.className="button"
+        button.textContent="Pay"
+        button.onclick = () => showPayPanel(invoice.id)
+        td7.appendChild(button)
+    }else{
+        td7.textContent = invoice.payment.type;
+        td7.setAttribute("onclick","viewInvoice("+invoice.id+")")
+    }
+    //td7.textContent = invoice.payment !== null ? 'hello' : 'bello'
+    tr.appendChild(td7);
+
+    const td8 = document.createElement("td");
     const form = document.createElement("form");
     form.method="get"
     form.action="/list/delete/"+invoice.id;
@@ -107,8 +124,10 @@ function createRow(invoice,prefixName){
     button.className="button"
     button.textContent="X"
     form.appendChild(button);
-    td7.appendChild(form);
-    tr.appendChild(td7);
+    td8.appendChild(form);
+    tr.appendChild(td8);
+
+
 
     document.getElementById(prefixName+"Body").appendChild(tr)
 }

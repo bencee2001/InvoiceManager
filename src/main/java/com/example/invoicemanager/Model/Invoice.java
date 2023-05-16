@@ -36,6 +36,13 @@ public class Invoice {
     private String itemName;
 
     @NonNull
+    private Integer itemNumber;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name="payment_id", referencedColumnName = "id")
+    private Payment payment;
+
+    @NonNull
     private String comment;
 
     @NonNull

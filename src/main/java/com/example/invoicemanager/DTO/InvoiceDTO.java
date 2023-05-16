@@ -24,8 +24,10 @@ public class InvoiceDTO {
     private Date dueDate;
     private String itemName;
     private String comment;
+    private Integer itemNumber;
     private BigDecimal price;
     private Boolean isNew;
+    private PaymentDTO payment;
 
     public static InvoiceDTO toInvoiceDTO(Invoice invoice){
         return InvoiceDTO.builder()
@@ -34,10 +36,12 @@ public class InvoiceDTO {
                 .dueDate(invoice.getDueDate())
                 .comment(invoice.getComment())
                 .itemName(invoice.getItemName())
+                .itemNumber(invoice.getItemNumber())
                 .price(invoice.getPrice())
                 .userName(invoice.getUser().getUserName())
                 .buyerName(invoice.getUser().getName())
                 .isNew(invoice.getIsNew())
+                .payment(invoice.getPayment()!=null ? PaymentDTO.toPaymentDTO(invoice.getPayment()):null)
                 .build();
     }
 

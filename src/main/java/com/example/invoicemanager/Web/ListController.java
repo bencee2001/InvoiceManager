@@ -1,5 +1,7 @@
 package com.example.invoicemanager.Web;
 
+import com.example.invoicemanager.DTO.InvoiceUpdateDTO;
+import com.example.invoicemanager.Model.PaymentType;
 import com.example.invoicemanager.Model.User;
 import com.example.invoicemanager.DTO.InvoiceCreateDTO;
 import com.example.invoicemanager.DTO.InvoiceDTO;
@@ -27,6 +29,7 @@ public class ListController {
     @GetMapping
     public String getList(Model model){
         User user = userService.getPrincipalUser();
+        model.addAttribute("payTypes", PaymentType.values());
         model.addAttribute("invoices", InvoiceDTO.toInvoiceDTOList(invoiceService.getInvoicesByUser(user)));
         model.addAttribute("clinetInvoces",bookService.getAllClientInvoicesByUser(user));
         return "list";

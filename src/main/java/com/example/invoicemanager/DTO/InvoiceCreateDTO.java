@@ -19,6 +19,7 @@ public class InvoiceCreateDTO {
     private String issueDate;
     private String dueDate;
     private String itemName;
+    private Integer itemNumber;
     private String comment;
     private BigDecimal price;
     private Boolean isNew;
@@ -32,9 +33,11 @@ public class InvoiceCreateDTO {
                 .issueDate(iDate)
                 .dueDate(dDate)
                 .itemName(itemName)
+                .itemNumber(itemNumber)
                 .comment(comment)
                 .price(price)
                 .isNew(true)
+                .payment(null)
                 .build();
     }
 }

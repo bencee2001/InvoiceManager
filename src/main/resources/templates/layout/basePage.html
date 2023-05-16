@@ -11,11 +11,11 @@
     <div layout:fragment="pageName">
       <strong><span sec:authentication="name" class="logo">Login</span></strong>
     </div>
-    <div class="header-right" layout:fragment="baseNavigation">
-      <a th:href="@{/logout}">Logout</a>
-    </div>
     <div class="header-right" layout:fragment="navigation">
       <a th:href="@{/home}">Home</a>
+    </div>
+    <div class="header-logout" layout:fragment="baseNavigation">
+      <a th:href="@{/logout}" id="logoutBtn">Logout</a>
     </div>
   </div>
 

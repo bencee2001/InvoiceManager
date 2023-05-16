@@ -7,8 +7,51 @@
 
     <link th:href="@{/styles/tableBorderAndHover.css}" rel="stylesheet" />
     <link th:href="@{/styles/switch.css}" rel="stylesheet" />
+    <link th:href="@{/styles/select.css}" rel="stylesheet" />
     <script type="text/javascript" th:src="@{/js/list.js}"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <style>
+
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            padding-top: 100px; /* Location of the box */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 300px;
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaaaaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 
 </head>
 <body>
@@ -38,18 +81,25 @@
                 <th>Due Date</th>
                 <th>Comment</th>
                 <th>Price</th>
+                <th>Payment</th>
                 <th></th>
             </tr>
-            <tr class="ownRows" th:each="invoice : ${invoices}" th:attr="onclick=|viewInvoice('${invoice.id}')|" >
+            <tr class="ownRows" th:each="invoice : ${invoices}"  >
 
                 <div>
-                    <td  th:text="${invoice.isNew}? New : Opened"></td>
-                    <td  th:text="${invoice.buyerName}"></td>
-                    <td  th:text="${#dates.format(invoice.issueDate,'yyyy-MM-dd')}"></td>
-                    <td  th:text="${#dates.format(invoice.dueDate,'yyyy-MM-dd')}"></td>
-                    <td  th:text="${invoice.comment}"></td>
-                    <td  th:text="${invoice.price}"></td>
-
+                    <td th:attr="onclick=|viewInvoice('${invoice.id}')|" th:text="${invoice.isNew}? New : Opened"></td>
+                    <td th:attr="onclick=|viewInvoice('${invoice.id}')|" th:text="${invoice.buyerName}"></td>
+                    <td th:attr="onclick=|viewInvoice('${invoice.id}')|" th:text="${#dates.format(invoice.issueDate,'yyyy-MM-dd')}"></td>
+                    <td th:attr="onclick=|viewInvoice('${invoice.id}')|" th:text="${#dates.format(invoice.dueDate,'yyyy-MM-dd')}"></td>
+                    <td th:attr="onclick=|viewInvoice('${invoice.id}')|" th:text="${invoice.comment}"></td>
+                    <td th:attr="onclick=|viewInvoice('${invoice.id}')|" th:text="${invoice.price * invoice.itemNumber}"></td>
+                    <td th:attr="onclick=|viewInvoice('${invoice.id}')|" th:hidden="${invoice.payment==null}"
+                        th:text="${invoice.payment==null ? null:invoice.payment.type}"> </td>
+                    <td th:hidden="${invoice.payment!=null}" align="center">
+                        <button th:attr="onclick=|showPayPanel('${invoice.id}')|" class="button">
+                            Pay
+                        </button>
+                    </td>
                 <td>
                     <form th:action="@{|/invoice/delete/${invoice.id}|}" method="get">
                         <button type="submit" class="button">
@@ -73,17 +123,25 @@
             <th>Due Date</th>
             <th>Comment</th>
             <th>Price</th>
+            <th>Payment</th>
             <th></th>
         </tr>
 
-        <tr class="clientRows" th:each="invoice : ${clinetInvoces}" th:attr="onclick=|viewInvoice('${invoice.id}')|">
+        <tr class="clientRows" th:each="invoice : ${clinetInvoces}" >
             <div>
-                <td  th:text="*{invoice.isNew}? New : Opened"></td>
-                <td  th:text="${invoice.buyerName}"></td>
-                <td  th:text="${#dates.format(invoice.issueDate,'yyyy-MM-dd')}"></td>
-                <td  th:text="${#dates.format(invoice.dueDate,'yyyy-MM-dd')}"></td>
-                <td  th:text="${invoice.comment}"></td>
-                <td  th:text="${invoice.price}"></td>
+                <td th:attr="onclick=|viewInvoice('${invoice.id}')|" th:text="*{invoice.isNew}? New : Opened"></td>
+                <td th:attr="onclick=|viewInvoice('${invoice.id}')|" th:text="${invoice.buyerName}"></td>
+                <td th:attr="onclick=|viewInvoice('${invoice.id}')|" th:text="${#dates.format(invoice.issueDate,'yyyy-MM-dd')}"></td>
+                <td th:attr="onclick=|viewInvoice('${invoice.id}')|" th:text="${#dates.format(invoice.dueDate,'yyyy-MM-dd')}"></td>
+                <td th:attr="onclick=|viewInvoice('${invoice.id}')|" th:text="${invoice.comment}"></td>
+                <td th:attr="onclick=|viewInvoice('${invoice.id}')|" th:text="${invoice.price * invoice.itemNumber}"></td>
+                <td th:attr="onclick=|viewInvoice('${invoice.id}')|" th:hidden="${invoice.payment==null}"
+                    th:text="${invoice.payment==null ? null:invoice.payment.type}"> </td>
+                <td th:hidden="${invoice.payment!=null}" align="center">
+                    <button th:attr="onclick=|showPayPanel('${invoice.id}')|" class="button">
+                        Pay
+                    </button>
+                </td>
                 <td>
                     <form th:action="@{|/invoice/delete/${invoice.id}|}" method="get">
                         <button type="submit" class="button">
@@ -97,12 +155,75 @@
 
         </tbody>
     </table>
+
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close"></span>
+            <select id = "typeSelect" onchange="btnChange()">
+                <option>Select Payment Type</option>
+                <option th:each="type : ${payTypes}" th:value="${type}" th:text="${type}"></option>
+            </select>
+            <button class="button" th:attr="onclick=|sendPayRequest()|" id="payBtn" disabled>Pay</button>
+        </div>
+
+    </div>
+
     <script th:inline="javascript">
         ajaxInit([[${clinetInvoces}]],[[${_csrf.parameterName}]],[[${_csrf.token}]])
 
         $(document).ready(function(){
-            setInterval(reloadTables, 3000);
+            //setInterval(reloadTables, 3000);
         });
+
+
+
+
+
+        var modal = document.getElementById("myModal");
+        var span = document.getElementsByClassName("close")[0];
+        function btnChange(){
+            if(document.getElementById("typeSelect").value!=='Select Payment Type'){
+                document.getElementById("payBtn").disabled=false
+            }else{
+                document.getElementById("payBtn").disabled=true
+            }
+        }
+        // When the user clicks the button, open the modal
+        let chosenInvoiceID;
+
+        function showPayPanel( invoiceId ) {
+            chosenInvoiceID = invoiceId
+            modal.style.display = "block";
+        }
+
+        function sendPayRequest(){
+            console.log(document.getElementById("typeSelect").value)
+            $.ajax({
+                url: '/pay/select/'+chosenInvoiceID,
+                type: 'GET',
+                data:{
+                    csrf_name : csrf_token,
+                    type : document.getElementById("typeSelect").value
+                },
+                success: () => reloadTables()
+            })
+            modal.style.display = "none";
+        }
+
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
     </script>
 </div>
 </body>

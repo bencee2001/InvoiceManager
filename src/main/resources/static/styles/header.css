@@ -1,7 +1,11 @@
 .header {
     overflow: hidden;
-    background-color: #f1f1f1;
-    padding: 20px 10px;
+    background-color: #c9cbd2;
+    padding: 10px 10px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
 }
 
 .header a {
@@ -13,18 +17,23 @@
     font-size: 18px;
     line-height: 25px;
     border-radius: 4px;
-    background-color: #bec7ce;
+    background-color: #68a2d7;
+    margin: 4px;
 }
 
 .header span {
     float: left;
     color: black;
     text-align: center;
-    padding: 12px;
+    padding-left: 12px;
+    padding-right: 12px;
     text-decoration: none;
     font-size: 18px;
     line-height: 25px;
     border-radius: 4px;
+
+    display: flex;
+    align-items: center;
 }
 
 .header a.logo {
@@ -44,8 +53,25 @@
 
 .header-right {
     float: right;
+
+    display: flex;
+    margin-left: auto;
+    align-items: center;
 }
 
+.header-logout{
+    float: right;
+}
+
+#logoutBtn{
+    background-color: brown;
+    color: whitesmoke;
+}
+
+#logoutBtn:hover{
+    background-color: red;
+    color: whitesmoke;
+}
 
 @media screen and (max-width: 500px) {
     .header a {

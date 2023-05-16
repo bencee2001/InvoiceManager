@@ -6,11 +6,26 @@ input[type=text] {
     border: 2px solid #ccd2ff;
     border-radius: 4px;
 }
-input[type=number],[type=date]{
-    width: 15%;
+input[type=number]{
+    width: auto;
     padding: 12px 20px;
     margin: 8px 0;
     box-sizing: border-box;
     border: 2px solid #ccd2ff;
     border-radius: 4px;
 }
+
+input[type=date]{
+    width: auto;
+    padding: 12px 20px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    border: 2px solid #ccd2ff;
+    border-radius: 4px;
+}
+
+.in-row{
+    display:flex;
+
+}
+
